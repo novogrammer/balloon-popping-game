@@ -9,7 +9,14 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/three": "^0.152.1",
     "typescript": "^5.0.2",
     "vite": "^4.3.9"
+  },
+  "dependencies": {
+    "gsap": "^3.12.1",
+    "sass": "^1.63.3",
+    "stats.js": "^0.17.0",
+    "three": "^0.153.0"
   }
 }
