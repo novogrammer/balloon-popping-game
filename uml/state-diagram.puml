@@ -1,0 +1,11 @@
+@startuml
+[*] --> SceneStateTitle
+
+SceneStateTitle --> SceneStatePlaying
+
+SceneStatePlaying --> SceneStateResult
+
+SceneStateResult --> SceneStateTitle
+
+@enduml
+

@@ -1,0 +1,82 @@
+@startuml
+title クラス図
+
+class Location{
+
+}
+
+class Foot{
+  location:Location
+  --
+  update(dt:number)
+}
+
+class Balloon{
+  location:Location
+  progress:number
+  --
+  update(dt:number)
+}
+
+class Field{
+  locationList:Location[]
+  footList:Foot[]
+  balloonList:Baloon[]
+  --
+  update(dt:number)
+}
+
+
+abstract class SceneStateBase{
+  --
+  constructor(sceneContext:SceneContextInterface)
+  onKeyDown(event:KeyboardEvent):void
+  abstract onBeginSceneState():void
+  abstract onEndSceneState():void
+}
+
+class SceneStateTitle extends SceneStateBase{
+}
+class SceneStatePlaying extends SceneStateBase{
+  field:Field
+  gameTime:number
+  score:number
+  --
+}
+class SceneStateResult extends SceneStateBase{
+  score:number
+  --
+}
+
+
+interface SceneContextInterface{
+  --
+  setNextSceneState(nextSeneState:SceneStateBase):void
+  submitScore(score:number,name:string)
+}
+
+class App implements SceneContextInterface{
+  dataStore:DataStore
+  --
+  onKeyDown(event:KeyboardEvent):void
+}
+
+
+SceneStateBase o-- SceneContextInterface
+
+
+App o-- SceneStateBase
+
+SceneStatePlaying *-- Field
+
+
+Field *-- "3" Foot
+Field *-- "3" Location
+Field o-- "0..n" Balloon
+
+
+Foot o-- Location
+Balloon o-- Location
+
+
+@enduml
