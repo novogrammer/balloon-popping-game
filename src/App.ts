@@ -15,10 +15,19 @@ import SceneStateTitle from "./SceneState/SceneStateTitle";
 
 export default class App implements SceneContextInterface{
   currentSceneState?:SceneStateBase;
+  appElement:HTMLDivElement;
+  debugViewElement:HTMLDivElement;
   constructor(){
-    console.log(THREE);
-    console.log(Stats);
-    console.log(gsap);
+    // console.log(THREE);
+    // console.log(Stats);
+    // console.log(gsap);
+    this.appElement=document.querySelector<HTMLDivElement>("#app")!;
+    if(!this.appElement){
+      throw new Error("appElement is null");
+    }
+    this.debugViewElement=document.createElement("div");
+    this.debugViewElement.classList.add("p-debug-view");
+    this.appElement.appendChild(this.debugViewElement);
     this.setupEvents();
     this.setNextSceneState(new SceneStateTitle(this))
   }
@@ -62,5 +71,8 @@ export default class App implements SceneContextInterface{
     if(this.currentSceneState){
       this.currentSceneState.onBeginSceneState();
     }
+  }
+  getDebugViewElement(): HTMLDivElement {
+    return this.debugViewElement;
   }
 }
