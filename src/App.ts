@@ -14,13 +14,13 @@ import SceneStateTitle from "./SceneState/SceneStateTitle";
 // gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
 
 interface UIFootObjects{
-  buttonJElement:HTMLDivElement;
-  buttonKElement:HTMLDivElement;
-  buttonLElement:HTMLDivElement;
+  buttonJElement:HTMLButtonElement;
+  buttonKElement:HTMLButtonElement;
+  buttonLElement:HTMLButtonElement;
 }
 interface UISystemObjects{
-  buttonToggleDebugElement:HTMLDivElement;
-  buttonToggleUIElement:HTMLDivElement;
+  buttonToggleDebugElement:HTMLButtonElement;
+  buttonToggleUIElement:HTMLButtonElement;
 }
 
 
@@ -88,19 +88,19 @@ export default class App implements SceneContextInterface{
       footButtonListElement.classList.add("p-ui-view__foot-button-list");
       this.uiViewElement.appendChild(footButtonListElement);
       
-      const buttonJElement=document.createElement("div");
+      const buttonJElement=document.createElement("button");
       buttonJElement.textContent="J";
       buttonJElement.classList.add("p-ui-view__foot-button");
       buttonJElement.classList.add("p-ui-view__foot-button--j");
       footButtonListElement.appendChild(buttonJElement);
 
-      const buttonKElement=document.createElement("div");
+      const buttonKElement=document.createElement("button");
       buttonKElement.textContent="K";
       buttonKElement.classList.add("p-ui-view__foot-button");
       buttonKElement.classList.add("p-ui-view__foot-button--k");
       footButtonListElement.appendChild(buttonKElement);
 
-      const buttonLElement=document.createElement("div");
+      const buttonLElement=document.createElement("button");
       buttonLElement.textContent="L";
       buttonLElement.classList.add("p-ui-view__foot-button");
       buttonLElement.classList.add("p-ui-view__foot-button--l");
@@ -117,13 +117,13 @@ export default class App implements SceneContextInterface{
       systemButtonListElement.classList.add("p-ui-view__system-button-list");
       this.uiViewElement.appendChild(systemButtonListElement);
 
-      const buttonToggleDebugElement=document.createElement("div");
+      const buttonToggleDebugElement=document.createElement("button");
       buttonToggleDebugElement.textContent="toggle debug";
       buttonToggleDebugElement.classList.add("p-ui-view__system-button");
       buttonToggleDebugElement.classList.add("p-ui-view__system-button--toggle-debug");
       systemButtonListElement.appendChild(buttonToggleDebugElement);
 
-      const buttonToggleUIElement=document.createElement("div");
+      const buttonToggleUIElement=document.createElement("button");
       buttonToggleUIElement.textContent="toggle ui";
       buttonToggleUIElement.classList.add("p-ui-view__system-button");
       buttonToggleUIElement.classList.add("p-ui-view__system-button--toggle-debug");
