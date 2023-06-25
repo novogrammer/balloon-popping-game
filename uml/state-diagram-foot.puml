@@ -1,0 +1,12 @@
+@startuml FootStateの状態遷移図
+title FootStateの状態遷移図
+
+
+[*] --> FootStateUp
+
+FootStateUp --> FootStateDown : KeyDown
+
+FootStateDown --> FootStateUp : KeyUp
+
+@enduml
+

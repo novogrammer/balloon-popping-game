@@ -1,5 +1,32 @@
-@startuml
+@startuml クラス図
 title クラス図
+
+abstract class BalloonStateBase{
+  balloonContext:BalloonContextInterface
+  abstract onBeginBalloonState():void
+  abstract onEndBalloonState():void
+  abstract onStamp():void
+  abstract update(dt):void;
+}
+class BalloonStatePreparing extends BalloonStateBase{
+
+}
+class BalloonStateReady extends BalloonStateBase{
+
+}
+class BalloonStatePopping extends BalloonStateBase{
+
+}
+class BalloonStateAway extends BalloonStateBase{
+
+}
+
+
+interface BalloonContextInterface{
+
+}
+
+
 
 class Location{
 
@@ -7,14 +34,15 @@ class Location{
 
 class Foot{
   location:Location
-  --
-  update(dt:number)
+  update(dt:number):void
+  onCodeDown(code:string):void
 }
 
-class Balloon{
+class Balloon implements BalloonContextInterface{
   location:Location
   progress:number
-  --
+  balloonState:BalloonStateBase
+
   update(dt:number)
 }
 
@@ -22,15 +50,17 @@ class Field{
   locationList:Location[]
   footList:Foot[]
   balloonList:Baloon[]
-  --
-  update(dt:number)
+
+  update(dt:number):void
 }
 
 
 abstract class SceneStateBase{
-  --
+  sceneContext:SceneContextInterface
+
   constructor(sceneContext:SceneContextInterface)
-  onKeyDown(event:KeyboardEvent):void
+  abstract onKeyDown(event:KeyboardEvent):void
+  abstract onKeyUp(event:KeyboardEvent):void
   abstract onBeginSceneState():void
   abstract onEndSceneState():void
 }
@@ -59,13 +89,12 @@ class App implements SceneContextInterface{
   dataStore:DataStore
   --
   onKeyDown(event:KeyboardEvent):void
+  onKeyUp(event:KeyboardEvent):void
 }
 
 
-SceneStateBase o-- SceneContextInterface
-
-
-App o-- SceneStateBase
+SceneStateBase o-up- SceneContextInterface
+App o-right- SceneStateBase
 
 SceneStatePlaying *-- Field
 
@@ -78,5 +107,8 @@ Field o-- "0..n" Balloon
 Foot o-- Location
 Balloon o-- Location
 
+
+BalloonStateBase o-up- BalloonContextInterface
+Balloon o-right- BalloonStateBase
 
 @enduml

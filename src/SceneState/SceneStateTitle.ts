@@ -1,9 +1,10 @@
 import { IS_DEBUG } from "../constants";
 import SceneContextInterface from "./SceneContextInterface";
 import SceneStateBase from "./SceneStateBase";
-import SceneStateTitle from "./SceneStateTitle";
 
-export default class SceneStateResult extends SceneStateBase{
+import SceneStatePlaying from "./SceneStatePlaying";
+
+export default class SceneStateTitle extends SceneStateBase{
   constructor(sceneContext:SceneContextInterface){
     super(sceneContext);
   }
@@ -23,7 +24,12 @@ export default class SceneStateResult extends SceneStateBase{
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onKeyDown`,event);
     }
-    const nextSceneState=new SceneStateTitle(this.sceneContext);
+    const nextSceneState=new SceneStatePlaying(this.sceneContext);
     this.sceneContext.setNextSceneState(nextSceneState);
+  }
+  onKeyUp(event: KeyboardEvent): void {
+    if(IS_DEBUG){
+      console.log(`${this.constructor.name}.onKeyUp`,event);
+    }
   }
 }

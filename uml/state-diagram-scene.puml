@@ -1,4 +1,7 @@
-@startuml
+@startuml SceneStateの状態遷移図
+title SceneStateの状態遷移図
+
+
 [*] --> SceneStateTitle
 
 SceneStateTitle --> SceneStatePlaying

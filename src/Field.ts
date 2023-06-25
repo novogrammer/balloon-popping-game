@@ -12,12 +12,20 @@ export default class Field{
       new ObjectLocation(2),
       new ObjectLocation(3),
     ];
-    this.footList=this.objectLocationList.map((objectLocation)=>{
-      return new Foot(objectLocation);
-    });
+    this.footList=[
+      new Foot(this.objectLocationList[0],"KeyJ"),
+      new Foot(this.objectLocationList[1],"KeyK"),
+      new Foot(this.objectLocationList[2],"KeyL"),
+    ];
 
   }
-  update(_dt:number){
+  update(dt:number){
 
+    for(let foot of this.footList){
+      foot.update(dt);
+    }
+    for(let balloon of this.balloonList){
+      balloon.update(dt);
+    }
   }
 }

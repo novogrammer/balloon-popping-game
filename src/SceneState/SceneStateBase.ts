@@ -6,6 +6,7 @@ export default abstract class SceneStateBase{
     this.sceneContext=sceneContext;
   }
   abstract onKeyDown(event:KeyboardEvent):void;
+  abstract onKeyUp(event:KeyboardEvent):void;
   abstract onBeginSceneState():void;
   abstract onEndSceneState():void;
 }

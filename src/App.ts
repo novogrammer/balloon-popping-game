@@ -5,9 +5,9 @@ import Stats from "stats.js";
 
 import {gsap} from "gsap";
 import { IS_DEBUG } from "./constants";
-import SceneContextInterface from "./scene/SceneContextInterface";
-import SceneStateBase from "./scene/SceneStateBase";
-import SceneStateTitle from "./scene/SceneStateTitle";
+import SceneContextInterface from "./SceneState/SceneContextInterface";
+import SceneStateBase from "./SceneState/SceneStateBase";
+import SceneStateTitle from "./SceneState/SceneStateTitle";
 // import {ScrollTrigger} from "gsap/ScrollTrigger";
 // import {ScrollToPlugin} from "gsap/ScrollToPlugin";
 
@@ -41,6 +41,15 @@ export default class App implements SceneContextInterface{
     //     console.log(event.code);
     //     break;
     // }
+  }
+  onKeyUp(event:KeyboardEvent){
+    if(IS_DEBUG){
+      console.log(event);
+    }
+    if(!this.currentSceneState){
+      throw new Error("this.currentSceneState is null");
+    }
+    this.currentSceneState.onKeyUp(event);
   }
   setupEvents(){
     document.addEventListener("keydown",this.onKeyDown.bind(this));

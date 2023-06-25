@@ -1,0 +1,14 @@
+@startuml FootStateの状態遷移図
+title FootStateの状態遷移図
+
+
+[*] --> BalloonStateBefore
+BalloonStateBefore --> BalloonStatePreparing
+BalloonStatePreparing --> BalloonStatePopping
+BalloonStatePopping --> [*]
+BalloonStatePreparing --> BalloonStateAway
+BalloonStateAway --> [*]
+
+
+@enduml
+
