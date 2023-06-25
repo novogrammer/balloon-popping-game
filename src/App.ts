@@ -18,9 +18,9 @@ export default class App implements SceneContextInterface{
   appElement:HTMLDivElement;
   debugViewElement:HTMLDivElement;
   constructor(){
-    // console.log(THREE);
-    // console.log(Stats);
-    // console.log(gsap);
+    console.log(THREE);
+    console.log(Stats);
+    console.log(gsap);
     this.appElement=document.querySelector<HTMLDivElement>("#app")!;
     if(!this.appElement){
       throw new Error("appElement is null");
