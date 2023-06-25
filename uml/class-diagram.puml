@@ -36,6 +36,7 @@ class Foot{
   location:Location
   update(dt:number):void
   onCodeDown(code:string):void
+  onCodeUp(code:string):void
 }
 
 class Balloon implements BalloonContextInterface{
@@ -59,8 +60,8 @@ abstract class SceneStateBase{
   sceneContext:SceneContextInterface
 
   constructor(sceneContext:SceneContextInterface)
-  abstract onKeyDown(event:KeyboardEvent):void
-  abstract onKeyUp(event:KeyboardEvent):void
+  abstract onCodeDown(code:string):void
+  abstract onCodeUp(code:string):void
   abstract onBeginSceneState():void
   abstract onEndSceneState():void
 }

@@ -30,16 +30,16 @@ export default class SceneStatePlaying extends SceneStateBase{
     debugViewElement.removeChild(this.debugTitle);
     
   }
-  onKeyDown(event: KeyboardEvent): void {
+  onCodeDown(code:string): void {
     if(IS_DEBUG){
-      console.log(`${this.constructor.name}.onKeyDown`,event);
+      console.log(`${this.constructor.name}.onCodeDown`,code);
     }
     const nextSceneState=new SceneStateResult(this.sceneContext);
     this.sceneContext.setNextSceneState(nextSceneState);
   }
-  onKeyUp(event: KeyboardEvent): void {
+  onCodeUp(code:string): void {
     if(IS_DEBUG){
-      console.log(`${this.constructor.name}.onKeyUp`,event);
+      console.log(`${this.constructor.name}.onCodeUp`,code);
     }
   }
 }

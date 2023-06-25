@@ -5,8 +5,8 @@ export default abstract class SceneStateBase{
   constructor(sceneContext:SceneContextInterface){
     this.sceneContext=sceneContext;
   }
-  abstract onKeyDown(event:KeyboardEvent):void;
-  abstract onKeyUp(event:KeyboardEvent):void;
+  abstract onCodeDown(code:string):void;
+  abstract onCodeUp(code:string):void;
   abstract onBeginSceneState():void;
   abstract onEndSceneState():void;
 }

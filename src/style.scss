@@ -6,7 +6,40 @@ body{
 
 }
 .p-debug-view{
+  &--hidden{
+    display:none;
+  }
   &__title{
-    
+
+  }
+}
+.p-ui-view{
+  &--hidden{
+    display:none;
+  }
+  &__foot-button-list{
+    display:flex;
+  }
+  &__foot-button{
+    &--j{
+
+    }
+    &--k{
+
+    }
+    &--l{
+
+    }
+  }
+  &__system-button-list{
+    display:block;
+  }
+  &__system-button{
+    &--toggle-debug{
+
+    }
+    &--toggle-ui{
+
+    }
   }
 }
