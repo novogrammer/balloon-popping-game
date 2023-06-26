@@ -4,11 +4,11 @@ title SceneStateの状態遷移図
 
 [*] --> SceneStateTitle
 
-SceneStateTitle --> SceneStatePlaying
+SceneStateTitle --> SceneStatePlaying : Any KeyDown
 
-SceneStatePlaying --> SceneStateResult
+SceneStatePlaying --> SceneStateResult : Timeout
 
-SceneStateResult --> SceneStateTitle
+SceneStateResult --> SceneStateTitle : Any KeyDown / Submit High-score
 
 @enduml
 
