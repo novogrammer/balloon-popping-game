@@ -1,12 +1,12 @@
-@startuml FootStateの状態遷移図
-title FootStateの状態遷移図
+@startuml BalloonStateの状態遷移図
+title BalloonStateの状態遷移図
 
 
-[*] --> BalloonStateBefore
-BalloonStateBefore --> BalloonStatePreparing
-BalloonStatePreparing --> BalloonStatePopping
-BalloonStatePopping --> [*]
-BalloonStatePreparing --> BalloonStateAway
+[*] --> BalloonStatePreparing
+BalloonStatePreparing --> BalloonStateReady : Timeout
+BalloonStateReady --> BalloonStatePopping : onStamp
+BalloonStatePopping --> [*] : Timeout
+BalloonStateReady --> BalloonStateAway : Timeout
 BalloonStateAway --> [*]
 
 
