@@ -3,11 +3,11 @@ title BalloonStateの状態遷移図
 
 
 [*] --> BalloonStatePreparing
-BalloonStatePreparing --> BalloonStateReady : Timeout
+BalloonStatePreparing --> BalloonStateReady : Timeout random
 BalloonStateReady --> BalloonStatePopping : onStamp
-BalloonStatePopping --> [*] : Timeout
-BalloonStateReady --> BalloonStateAway : Timeout
-BalloonStateAway --> [*]
+BalloonStatePopping --> BalloonStatePreparing : Timeout constant
+BalloonStateReady --> BalloonStateAway : Timeout constant
+BalloonStateAway --> BalloonStatePreparing : Timeout constant
 
 
 @enduml

@@ -41,4 +41,7 @@ export default class SceneStateTitle extends SceneStateBase{
       console.log(`${this.constructor.name}.onCodeUp`,code);
     }
   }
+  update(_dt:number):void{
+
+  }
 }

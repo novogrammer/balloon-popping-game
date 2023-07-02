@@ -9,4 +9,5 @@ export default abstract class SceneStateBase{
   abstract onCodeUp(code:string):void;
   abstract onBeginSceneState():void;
   abstract onEndSceneState():void;
+  abstract update(dt:number):void;
 }

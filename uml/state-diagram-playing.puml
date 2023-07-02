@@ -1,0 +1,11 @@
+@startuml PlayingStateの状態遷移図
+title PlayingStateの状態遷移図
+
+[*] --> PlayingStateCountdown
+PlayingStateCountdown --> PlayingStateAction : Timeout
+PlayingStateAction --> PlayingStateTimeover : Timeout
+PlayingStateTimeover --> [*] : Timeout / goNextScene()
+
+
+@enduml
+

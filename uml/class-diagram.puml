@@ -6,7 +6,7 @@ abstract class BalloonStateBase{
   abstract onBeginBalloonState():void
   abstract onEndBalloonState():void
   abstract onStamp():void
-  abstract update(dt):void;
+  abstract update(dt:number):void
 }
 class BalloonStatePreparing extends BalloonStateBase{
 
@@ -28,33 +28,59 @@ interface BalloonContextInterface{
 
 
 
-class Location{
-
+class ObjectLocation{
+  foot:Foot
+  balloon:Balloon
+  constructor(foot:Foot,balloon:Balloon)
+  destroy():void
 }
 
 class Foot{
-  location:Location
-  update(dt:number):void
-  onCodeDown(code:string):void
-  onCodeUp(code:string):void
+  objectLocation:ObjectLocation
+  update(dt:number:number):void
+  destroy():void
+  onActionCodeDown(code:string):void
+  onActionCodeUp(code:string):void
+  setObjectLocation(objectLocation?:ObjectLocation):void
 }
 
 class Balloon implements BalloonContextInterface{
-  location:Location
-  progress:number
+  objectLocation:ObjectLocation
   balloonState:BalloonStateBase
 
-  update(dt:number)
+  update(dt:number:number)
+  destroy():void
+  setObjectLocation(objectLocation?:ObjectLocation):void
 }
 
-class Field{
-  locationList:Location[]
-  footList:Foot[]
-  balloonList:Baloon[]
+abstract class PlayingStateBase{
+  playingContext:PlayingContextInterface
 
-  update(dt:number):void
+  constructor(playingContext:PlayingContextInterface)
+  abstract onBeginPlayingState():void
+  abstract onEndPlayingState():void
+  abstract update(dt:number):void
+  abstract onCodeDown(code:string):void
+  abstract onCodeUp(code:string):void
 }
 
+class PlayingStateCountdown extends PlayingStateBase{
+
+}
+class PlayingStateAction extends PlayingStateBase{
+
+}
+
+class PlayingStateTimeover extends PlayingStateBase{
+
+}
+
+interface PlayingContextInterface{
+  updateCountdownTime(dt:number):boolean
+  updateGameTime(dt:number):boolean
+  updateTimeoutTime(dt:number):boolean
+  setNextPlayingState(nextPlayingState:PlayingStateBase):void
+}
 
 abstract class SceneStateBase{
   sceneContext:SceneContextInterface
@@ -64,19 +90,23 @@ abstract class SceneStateBase{
   abstract onCodeUp(code:string):void
   abstract onBeginSceneState():void
   abstract onEndSceneState():void
+  abstract update(dt:number):void
 }
 
 class SceneStateTitle extends SceneStateBase{
 }
-class SceneStatePlaying extends SceneStateBase{
+class SceneStatePlaying extends SceneStateBase implements PlayingContextInterface{
   field:Field
   gameTime:number
   score:number
+  currentPlayingState:SceneStateBase
+  objectLocationList:ObjectLocation[3]
   --
 }
 class SceneStateResult extends SceneStateBase{
   score:number
   --
+  constructor(sceneContext:SceneContextInterface,score:number)
 }
 
 
@@ -91,25 +121,23 @@ class App implements SceneContextInterface{
   --
   onKeyDown(event:KeyboardEvent):void
   onKeyUp(event:KeyboardEvent):void
+  update(dt:number):void;
 }
 
 
 SceneStateBase o-up- SceneContextInterface
 App o-right- SceneStateBase
 
-SceneStatePlaying *-- Field
-
-
-Field *-- "3" Foot
-Field *-- "3" Location
-Field o-- "0..n" Balloon
-
-
-Foot o-- Location
-Balloon o-- Location
+SceneStatePlaying *-- "3" ObjectLocation
+ObjectLocation *-- Foot
+ObjectLocation *-- Balloon
 
 
 BalloonStateBase o-up- BalloonContextInterface
 Balloon o-right- BalloonStateBase
+
+
+PlayingStateBase o-up- PlayingContextInterface
+SceneStatePlaying o-left- PlayingStateBase
 
 @enduml

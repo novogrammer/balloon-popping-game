@@ -4,9 +4,11 @@ import SceneStateBase from "./SceneStateBase";
 import SceneStateTitle from "./SceneStateTitle";
 
 export default class SceneStateResult extends SceneStateBase{
+  score:number;
   debugTitle:HTMLDivElement;
-  constructor(sceneContext:SceneContextInterface){
+  constructor(sceneContext:SceneContextInterface,score:number){
     super(sceneContext);
+    this.score=score;
     this.debugTitle=document.createElement("div");
     this.debugTitle.classList.add("p-debug-view__title");
     this.debugTitle.textContent="SceneStateResult";
@@ -38,5 +40,8 @@ export default class SceneStateResult extends SceneStateBase{
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onCodeUp`,code);
     }
+  }
+  update(_dt:number):void{
+    
   }
 }

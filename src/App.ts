@@ -25,12 +25,13 @@ interface UISystemObjects{
 
 
 export default class App implements SceneContextInterface{
-  currentSceneState?:SceneStateBase;
+  currentSceneState:SceneStateBase|null=null;
   appElement:HTMLDivElement;
   debugViewElement:HTMLDivElement;
   uiViewElement:HTMLDivElement;
   uiFootObjects?:UIFootObjects;
   uiSystemObjects?:UISystemObjects;
+  stats?:Stats;
   constructor(){
     console.log(THREE);
     console.log(Stats);
@@ -43,9 +44,10 @@ export default class App implements SceneContextInterface{
     this.debugViewElement.classList.add("p-debug-view");
     this.appElement.appendChild(this.debugViewElement);
     this.uiViewElement=document.createElement("div");
-    this.uiViewElement.classList.add("p-debug-view");
+    this.uiViewElement.classList.add("p-ui-view");
     this.appElement.appendChild(this.uiViewElement);
     
+    this.setupStats();
     this.setupUI();
     this.setupEvents();
     this.setNextSceneState(new SceneStateTitle(this))
@@ -60,17 +62,14 @@ export default class App implements SceneContextInterface{
     if(!event.repeat){
       this.currentSceneState.onCodeDown(event.code);
     }
-    // switch(event.code){
-    //   case "KeyJ":
-    //     console.log(event.code);
-    //     break;
-    //   case "KeyK":
-    //     console.log(event.code);
-    //     break;
-    //   case "KeyL":
-    //     console.log(event.code);
-    //     break;
-    // }
+    switch(event.code){
+      case "KeyD":
+        this.debugViewElement.classList.toggle("p-debug-view--hidden");
+        break;
+      case "KeyU":
+        this.uiViewElement.classList.toggle("p-ui-view--hidden");
+        break;
+    }
   }
   onKeyUp(event:KeyboardEvent){
     if(IS_DEBUG){
@@ -80,6 +79,14 @@ export default class App implements SceneContextInterface{
       throw new Error("this.currentSceneState is null");
     }
     this.currentSceneState.onCodeUp(event.code);
+  }
+  setupStats(){
+    this.stats = new Stats();
+    this.stats.dom.style.display = IS_DEBUG ? "block" : "none";
+    this.stats.dom.style.left="auto";
+    this.stats.dom.style.right="0px";
+    document.body.appendChild(this.stats.dom);
+
   }
   setupUI(){
     {
@@ -185,8 +192,33 @@ export default class App implements SceneContextInterface{
       });
 
     }
+
+    let previousTime=performance.now() * 0.001;
+    const animate = () => {
+      if(this.stats){
+        this.stats.begin();
+      }
+      requestAnimationFrame(animate);
+      const currentTime=performance.now() * 0.001;
+      const dt=currentTime-previousTime;
+      this.update(dt);
+      previousTime=currentTime;
+      if(this.stats){
+        this.stats.end();
+      }
+    }
+
+    animate();
+
   }
-  setNextSceneState(nextSceneState:SceneStateBase):void {
+  update(dt:number):void{
+    if(this.currentSceneState){
+      this.currentSceneState.update(dt);
+    }
+
+  }
+
+  setNextSceneState(nextSceneState:SceneStateBase|null):void {
     if(this.currentSceneState){
       this.currentSceneState.onEndSceneState();
     }

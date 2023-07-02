@@ -6,22 +6,53 @@ enum FootState{
 }
 
 export default class Foot{
-  objectLocation:ObjectLocation;
+  objectLocation:ObjectLocation|null=null;
   targetCode:string;
   footState:FootState;
+  debugFoot:HTMLElement;
   
-  constructor(objectLocation:ObjectLocation,targetCode:string){
-    this.objectLocation=objectLocation;
+  constructor(targetCode:string){
     this.targetCode=targetCode;
     this.footState=FootState.Up;
+    this.debugFoot=document.createElement("div");
+    this.debugFoot.classList.add("p-debug-view__foot");
+    this.debugFoot.classList.add("p-debug-view__foot--up");
+  }
+  destroy(){
+  }
+  setObjectLocation(objectLocation:ObjectLocation|null){
+    if(this.objectLocation){
+      this.objectLocation.debugObjectLocation.removeChild(this.debugFoot);
+    }
+    this.objectLocation=objectLocation;
+    if(this.objectLocation){
+      this.objectLocation.debugObjectLocation.appendChild(this.debugFoot);
+    }
+    
   }
   update(_dt:number){
 
   }
-  onCodeDown(_code:string){
+  onActionCodeDown(code:string){
+    if(code!==this.targetCode){
+      return;
+    }
+    if(!this.objectLocation){
+      throw new Error("objectLocation is null");
+    }
+    this.footState=FootState.Down;
+    this.debugFoot.classList.remove("p-debug-view__foot--up");
+    this.debugFoot.classList.add("p-debug-view__foot--down");
 
+    this.objectLocation.onStamp();
   }
-  onCodeUp(_code:string){
+  onActionCodeUp(code:string){
+    if(code!==this.targetCode){
+      return;
+    }
+    this.footState=FootState.Up;
+    this.debugFoot.classList.remove("p-debug-view__foot--down");
+    this.debugFoot.classList.add("p-debug-view__foot--up");
 
   }
 }

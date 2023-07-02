@@ -1,13 +1,31 @@
 import BalloonContextInterface from "./BalloonState/BalloonContextInterface";
 import BalloonStateBase from "./BalloonState/BalloonStateBase";
 import BalloonStatePreparing from "./BalloonState/BalloonStatePreparing";
+import ObjectLocation from "./ObjectLocation";
 
 export default class Balloon implements BalloonContextInterface{
-  currentBalloonState?:BalloonStateBase;
+  objectLocation:ObjectLocation|null=null;
+  currentBalloonState:BalloonStateBase|null=null;
+  debugBalloon:HTMLElement;
   constructor(){
+    this.debugBalloon=document.createElement("div");
+    this.debugBalloon.classList.add("p-debug-view__balloon");
     this.setNextBalloonState(new BalloonStatePreparing(this));
   }
-  setNextBalloonState(nextBalloonState: BalloonStateBase): void {
+  destroy(){
+    this.setNextBalloonState(null);
+  }
+  setObjectLocation(objectLocation:ObjectLocation|null){
+    if(this.objectLocation){
+      this.objectLocation.debugObjectLocation.removeChild(this.debugBalloon);
+    }
+    this.objectLocation=objectLocation;
+    if(this.objectLocation){
+      this.objectLocation.debugObjectLocation.appendChild(this.debugBalloon);
+    }
+  }
+
+  setNextBalloonState(nextBalloonState: BalloonStateBase|null): void {
     if(this.currentBalloonState){
       this.currentBalloonState.onEndBalloonState();
     }
@@ -21,5 +39,11 @@ export default class Balloon implements BalloonContextInterface{
       throw new Error("currentBalloonState is null");
     }
     this.currentBalloonState.update(dt);
+  }
+  onStamp():void{
+    if(!this.currentBalloonState){
+      throw new Error("currentBalloonState is null");
+    }
+    this.currentBalloonState.onStamp();
   }
 }

@@ -1,5 +1,5 @@
 import SceneStateBase from "./SceneStateBase";
 export default interface SceneContextInterface{
-  setNextSceneState(nextSceneState:SceneStateBase):void;
+  setNextSceneState(nextSceneState:SceneStateBase|null):void;
   getDebugViewElement():HTMLDivElement;
 }
