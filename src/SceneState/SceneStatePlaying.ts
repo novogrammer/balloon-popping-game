@@ -26,6 +26,8 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
   debugTimeoutTime:HTMLDivElement;
   debugScore:HTMLDivElement;
   debugObjectLocationList:HTMLDivElement;
+
+  isInAction:boolean;
   
   constructor(sceneContext:SceneContextInterface){
     super(sceneContext);
@@ -33,6 +35,7 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
     this.gameTime=GAME_DURATION;
     this.timeoutTime=TIMEOUT_DURATION;
     this.score=0;
+    this.isInAction=false;
     this.debugTitle=document.createElement("div");
     this.debugTitle.classList.add("p-debug-view__title");
     this.debugTitle.textContent="SceneStatePlaying";
@@ -144,6 +147,18 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
       objectLocation.onActionCodeUp(code);
     }
   }
+  onBeginAction(){
+    if(IS_DEBUG){
+      console.log(`${this.constructor.name}.onBeginAction`);
+    }
+    this.isInAction=true;
+  }
+  onEndAction(){
+    if(IS_DEBUG){
+      console.log(`${this.constructor.name}.onEndAction`);
+    }
+    this.isInAction=false;
+  }
   goNextScene(){
     const nextSceneState=new SceneStateResult(this.sceneContext,this.score);
     this.sceneContext.setNextSceneState(nextSceneState);
@@ -152,6 +167,12 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
     if(this.currentPlayingState){
       this.currentPlayingState.update(dt);
     }
+    if(this.isInAction){
+      for(let objectLocation of this.objectLocationList){
+        objectLocation.update(dt);
+      }
+    }
+    
     this.debugCountdownTime.textContent=`countdown time: ${this.countdownTime}`;
     this.debugGameTime.textContent=`game time: ${this.gameTime}`;
     this.debugTimeoutTime.textContent=`timeout time: ${this.timeoutTime}`;

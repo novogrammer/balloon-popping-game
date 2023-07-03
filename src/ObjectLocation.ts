@@ -33,4 +33,8 @@ export default class ObjectLocation{
   onStamp():void{
     this.balloon.onStamp();
   }
+  update(dt:number):void{
+    this.foot.update(dt);
+    this.balloon.update(dt);
+  }
 }

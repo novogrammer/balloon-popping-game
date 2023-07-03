@@ -8,4 +8,6 @@ export default interface PlayingContextInterface{
   goNextScene():void;
   onActionCodeDown(code:string): void;
   onActionCodeUp(code:string): void;
+  onBeginAction():void;
+  onEndAction():void;
 }

@@ -33,6 +33,7 @@ class ObjectLocation{
   balloon:Balloon
   constructor(foot:Foot,balloon:Balloon)
   destroy():void
+  update(dt:number:number):void
 }
 
 class Foot{
@@ -48,7 +49,7 @@ class Balloon implements BalloonContextInterface{
   objectLocation:ObjectLocation
   balloonState:BalloonStateBase
 
-  update(dt:number:number)
+  update(dt:number:number):void
   destroy():void
   setObjectLocation(objectLocation?:ObjectLocation):void
 }

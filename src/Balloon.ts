@@ -34,6 +34,13 @@ export default class Balloon implements BalloonContextInterface{
       this.currentBalloonState.onBeginBalloonState();
     }
   }
+  addDebugModifier(modifier:string):void{
+    this.debugBalloon.classList.add("p-debug-view__balloon--"+modifier);
+  }
+  removeDebugModifier(modifier:string):void{
+    this.debugBalloon.classList.remove("p-debug-view__balloon--"+modifier);
+  }
+
   update(dt:number){
     if(!this.currentBalloonState){
       throw new Error("currentBalloonState is null");
@@ -46,4 +53,5 @@ export default class Balloon implements BalloonContextInterface{
     }
     this.currentBalloonState.onStamp();
   }
+
 }
