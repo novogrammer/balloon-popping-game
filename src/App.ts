@@ -230,4 +230,7 @@ export default class App implements SceneContextInterface{
   getDebugViewElement(): HTMLDivElement {
     return this.debugViewElement;
   }
+  submitScore(_score:number,_name:string):void{
+
+  }
 }

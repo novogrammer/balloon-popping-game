@@ -23,7 +23,9 @@ class BalloonStateAway extends BalloonStateBase{
 
 
 interface BalloonContextInterface{
-
+  setNextBalloonState(nextBalloonState?:BalloonStateBase):void
+  addDebugModifier(modifier:string):void
+  removeDebugModifier(modifier:string):void
 }
 
 
@@ -33,25 +35,30 @@ class ObjectLocation{
   balloon:Balloon
   constructor(foot:Foot,balloon:Balloon)
   destroy():void
+  onActionCodeDown(code:string): void
+  onActionCodeUp(code:string): void
+  onStamp():void
   update(dt:number:number):void
 }
 
 class Foot{
   objectLocation:ObjectLocation
-  update(dt:number:number):void
   destroy():void
+  setObjectLocation(objectLocation?:ObjectLocation):void
+  update(dt:number:number):void
   onActionCodeDown(code:string):void
   onActionCodeUp(code:string):void
-  setObjectLocation(objectLocation?:ObjectLocation):void
 }
 
 class Balloon implements BalloonContextInterface{
   objectLocation:ObjectLocation
   balloonState:BalloonStateBase
 
-  update(dt:number:number):void
   destroy():void
   setObjectLocation(objectLocation?:ObjectLocation):void
+  addDebugModifier(modifier:string):void
+  removeDebugModifier(modifier:string):void
+  update(dt:number:number):void
 }
 
 abstract class PlayingStateBase{
@@ -61,8 +68,6 @@ abstract class PlayingStateBase{
   abstract onBeginPlayingState():void
   abstract onEndPlayingState():void
   abstract update(dt:number):void
-  abstract onCodeDown(code:string):void
-  abstract onCodeUp(code:string):void
 }
 
 class PlayingStateCountdown extends PlayingStateBase{
@@ -81,6 +86,7 @@ interface PlayingContextInterface{
   updateGameTime(dt:number):boolean
   updateTimeoutTime(dt:number):boolean
   setNextPlayingState(nextPlayingState:PlayingStateBase):void
+  goNextScene():void
 }
 
 abstract class SceneStateBase{
@@ -97,10 +103,11 @@ abstract class SceneStateBase{
 class SceneStateTitle extends SceneStateBase{
 }
 class SceneStatePlaying extends SceneStateBase implements PlayingContextInterface{
-  field:Field
-  gameTime:number
-  score:number
   currentPlayingState:SceneStateBase
+  countdownTime:number
+  gameTime:number
+  timeoutTime:number
+  score:number
   objectLocationList:ObjectLocation[3]
   --
 }
@@ -114,7 +121,7 @@ class SceneStateResult extends SceneStateBase{
 interface SceneContextInterface{
   --
   setNextSceneState(nextSeneState:SceneStateBase):void
-  submitScore(score:number,name:string)
+  submitScore(score:number,name:string):void
 }
 
 class App implements SceneContextInterface{

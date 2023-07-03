@@ -20,7 +20,7 @@ export default class Foot{
   }
   destroy(){
   }
-  setObjectLocation(objectLocation:ObjectLocation|null){
+  setObjectLocation(objectLocation:ObjectLocation|null):void{
     if(this.objectLocation){
       this.objectLocation.debugObjectLocation.removeChild(this.debugFoot);
     }
