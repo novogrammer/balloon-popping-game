@@ -24,10 +24,7 @@ export default class PlayingStateTimeover extends PlayingStateBase{
     }
 
   }
-  onCodeDown(_code:string):void{
-    // DO NOTHING
-  }
-  onCodeUp(_code:string):void{
-    // DO NOTHING
+  isInAction():boolean{
+    return false;
   }
 }

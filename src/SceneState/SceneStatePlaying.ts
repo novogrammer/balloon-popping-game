@@ -27,15 +27,12 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
   debugScore:HTMLDivElement;
   debugObjectLocationList:HTMLDivElement;
 
-  isInAction:boolean;
-  
   constructor(sceneContext:SceneContextInterface){
     super(sceneContext);
     this.countdownTime=COUNTDOWN_DURATION;
     this.gameTime=GAME_DURATION;
     this.timeoutTime=TIMEOUT_DURATION;
     this.score=0;
-    this.isInAction=false;
     this.debugTitle=document.createElement("div");
     this.debugTitle.classList.add("p-debug-view__title");
     this.debugTitle.textContent="SceneStatePlaying";
@@ -120,7 +117,11 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
       console.log(`${this.constructor.name}.onCodeDown`,code);
     }
     if(this.currentPlayingState){
-      this.currentPlayingState.onCodeDown(code);
+      if(this.currentPlayingState.isInAction()){
+        for(let objectLocation of this.objectLocationList){
+          objectLocation.onActionCodeDown(code);
+        }
+      }
     }
   }
   onCodeUp(code:string): void {
@@ -128,36 +129,12 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
       console.log(`${this.constructor.name}.onCodeUp`,code);
     }
     if(this.currentPlayingState){
-      this.currentPlayingState.onCodeUp(code);
+      if(this.currentPlayingState.isInAction()){
+        for(let objectLocation of this.objectLocationList){
+          objectLocation.onActionCodeUp(code);
+        }
+      }
     }
-  }
-  onActionCodeDown(code:string): void {
-    if(IS_DEBUG){
-      console.log(`${this.constructor.name}.onActionCodeDown`,code);
-    }
-    for(let objectLocation of this.objectLocationList){
-      objectLocation.onActionCodeDown(code);
-    }
-  }
-  onActionCodeUp(code:string): void {
-    if(IS_DEBUG){
-      console.log(`${this.constructor.name}.onActionCodeUp`,code);
-    }
-    for(let objectLocation of this.objectLocationList){
-      objectLocation.onActionCodeUp(code);
-    }
-  }
-  onBeginAction(){
-    if(IS_DEBUG){
-      console.log(`${this.constructor.name}.onBeginAction`);
-    }
-    this.isInAction=true;
-  }
-  onEndAction(){
-    if(IS_DEBUG){
-      console.log(`${this.constructor.name}.onEndAction`);
-    }
-    this.isInAction=false;
   }
   goNextScene(){
     const nextSceneState=new SceneStateResult(this.sceneContext,this.score);
@@ -166,12 +143,12 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
   update(dt:number):void{
     if(this.currentPlayingState){
       this.currentPlayingState.update(dt);
-    }
-    if(this.isInAction){
-      for(let objectLocation of this.objectLocationList){
-        objectLocation.update(dt);
+      if(this.currentPlayingState.isInAction()){
+        for(let objectLocation of this.objectLocationList){
+          objectLocation.update(dt);
+        }
       }
-    }
+      }
     
     this.debugCountdownTime.textContent=`countdown time: ${this.countdownTime}`;
     this.debugGameTime.textContent=`game time: ${this.gameTime}`;

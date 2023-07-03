@@ -24,10 +24,7 @@ export default class PlayingStateCountdown extends PlayingStateBase{
       this.playingContext.setNextPlayingState(new PlayingStateAction(this.playingContext));
     }
   }
-  onCodeDown(_code:string):void{
-    // DO NOTHING
-  }
-  onCodeUp(_code:string):void{
-    // DO NOTHING
+  isInAction():boolean{
+    return false;
   }
 }

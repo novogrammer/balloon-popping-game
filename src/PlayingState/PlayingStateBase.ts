@@ -9,7 +9,6 @@ export default abstract class PlayingStateBase{
   abstract onBeginPlayingState():void;
   abstract onEndPlayingState():void;
   abstract update(dt:number):void;
-  abstract onCodeDown(code:string):void;
-  abstract onCodeUp(code:string):void;
+  abstract isInAction():boolean;
 
 }

@@ -11,13 +11,11 @@ export default class PlayingStateAction extends PlayingStateBase{
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onBeginPlayingState`);
     }
-    this.playingContext.onBeginAction();
   }
   onEndPlayingState():void{
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onEndPlayingState`);
     }
-    this.playingContext.onEndAction();
   }
   update(dt:number):void{
     const isOK=this.playingContext.updateGameTime(dt);
@@ -26,10 +24,7 @@ export default class PlayingStateAction extends PlayingStateBase{
     }
 
   }
-  onCodeDown(code:string):void{
-    this.playingContext.onActionCodeDown(code);
-  }
-  onCodeUp(code:string):void{
-    this.playingContext.onActionCodeUp(code);
+  isInAction():boolean{
+    return true;
   }
 }
