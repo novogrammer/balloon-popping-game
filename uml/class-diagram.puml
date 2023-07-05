@@ -22,7 +22,7 @@ class BalloonStateAway extends BalloonStateBase{
 }
 
 
-interface BalloonContextInterface{
+interface BalloonContextInterface extends AddScoreListenerInterface{
   setNextBalloonState(nextBalloonState?:BalloonStateBase):void
   addDebugModifier(modifier:string):void
   removeDebugModifier(modifier:string):void
@@ -30,9 +30,10 @@ interface BalloonContextInterface{
 
 
 
-class ObjectLocation{
+class ObjectLocation implements AddScoreListenerInterface{
   foot:Foot
   balloon:Balloon
+  addScoreListener:AddScoreListenerInterface
   constructor(foot:Foot,balloon:Balloon)
   destroy():void
   onActionCodeDown(code:string): void
@@ -48,6 +49,10 @@ class Foot{
   update(dt:number:number):void
   onActionCodeDown(code:string):void
   onActionCodeUp(code:string):void
+}
+
+interface AddScoreListenerInterface{
+  addScore(score:number):void
 }
 
 class Balloon implements BalloonContextInterface{
@@ -102,7 +107,7 @@ abstract class SceneStateBase{
 
 class SceneStateTitle extends SceneStateBase{
 }
-class SceneStatePlaying extends SceneStateBase implements PlayingContextInterface{
+class SceneStatePlaying extends SceneStateBase implements PlayingContextInterface,AddScoreListenerInterface{
   currentPlayingState:SceneStateBase
   countdownTime:number
   gameTime:number

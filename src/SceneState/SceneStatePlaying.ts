@@ -8,8 +8,9 @@ import PlayingStateCountdown from "../PlayingState/PlayingStateCountdown";
 import ObjectLocation from "../ObjectLocation";
 import Foot from "../Foot";
 import Balloon from "../Balloon";
+import AddScoreListenerInterface from "../AddScoreListenerInterface";
 
-export default class SceneStatePlaying extends SceneStateBase implements PlayingContextInterface{
+export default class SceneStatePlaying extends SceneStateBase implements PlayingContextInterface,AddScoreListenerInterface{
   currentPlayingState:PlayingStateBase|null=null;
   // 減っていく
   countdownTime:number;
@@ -80,16 +81,19 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
         foot:new Foot("KeyJ"),
         balloon:new Balloon(),
         debugObjectLocation:debugObjectLocationJ,
+        addScoreListener:this,
       }),
       new ObjectLocation({
         foot:new Foot("KeyK"),
         balloon:new Balloon(),
         debugObjectLocation:debugObjectLocationK,
+        addScoreListener:this,
       }),
       new ObjectLocation({
         foot:new Foot("KeyL"),
         balloon:new Balloon(),
         debugObjectLocation:debugObjectLocationL,
+        addScoreListener:this,
       }),
     ];
     this.setNextPlayingState(new PlayingStateCountdown(this));
@@ -189,5 +193,8 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
     if(this.currentPlayingState){
       this.currentPlayingState.onBeginPlayingState();
     }
+  }
+  addScore(score: number): void {
+    this.score+=score;
   }
 }

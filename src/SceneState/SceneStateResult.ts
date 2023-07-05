@@ -6,12 +6,16 @@ import SceneStateTitle from "./SceneStateTitle";
 export default class SceneStateResult extends SceneStateBase{
   score:number;
   debugTitle:HTMLDivElement;
+  debugScore:HTMLDivElement;
   constructor(sceneContext:SceneContextInterface,score:number){
     super(sceneContext);
     this.score=score;
     this.debugTitle=document.createElement("div");
     this.debugTitle.classList.add("p-debug-view__title");
     this.debugTitle.textContent="SceneStateResult";
+    this.debugScore=document.createElement("div");
+    this.debugScore.classList.add("p-debug-view__score");
+
   }
   onBeginSceneState(): void {
     if(IS_DEBUG){
@@ -19,6 +23,7 @@ export default class SceneStateResult extends SceneStateBase{
     }
     const debugViewElement=this.sceneContext.getDebugViewElement();
     debugViewElement.appendChild(this.debugTitle);
+    debugViewElement.appendChild(this.debugScore);
     
   }
   onEndSceneState(): void {
@@ -27,6 +32,7 @@ export default class SceneStateResult extends SceneStateBase{
     }
     const debugViewElement=this.sceneContext.getDebugViewElement();
     debugViewElement.removeChild(this.debugTitle);
+    debugViewElement.removeChild(this.debugScore);
     
   }
   onCodeDown(code:string): void {
@@ -42,6 +48,6 @@ export default class SceneStateResult extends SceneStateBase{
     }
   }
   update(_dt:number):void{
-    
+    this.debugScore.textContent=`score: ${this.score}`;
   }
 }

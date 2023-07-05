@@ -53,5 +53,10 @@ export default class Balloon implements BalloonContextInterface{
     }
     this.currentBalloonState.onStamp();
   }
+  addScore(score: number): void {
+    if(this.objectLocation){
+      this.objectLocation.addScore(score);
+    }
+  }
 
 }
