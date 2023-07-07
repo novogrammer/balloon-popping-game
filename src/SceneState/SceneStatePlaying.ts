@@ -123,7 +123,7 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
     if(this.currentPlayingState){
       if(this.currentPlayingState.isInAction()){
         for(let objectLocation of this.objectLocationList){
-          objectLocation.onActionCodeDown(code);
+          objectLocation.onCodeDown(code);
         }
       }
     }
@@ -135,7 +135,7 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
     if(this.currentPlayingState){
       if(this.currentPlayingState.isInAction()){
         for(let objectLocation of this.objectLocationList){
-          objectLocation.onActionCodeUp(code);
+          objectLocation.onCodeUp(code);
         }
       }
     }

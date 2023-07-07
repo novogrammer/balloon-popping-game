@@ -28,11 +28,11 @@ export default class ObjectLocation implements AddScoreListenerInterface{
     this.foot.destroy();
     this.balloon.destroy();
   }
-  onActionCodeDown(code:string): void {
-    this.foot.onActionCodeDown(code);
+  onCodeDown(code:string): void {
+    this.foot.onCodeDown(code);
   }
-  onActionCodeUp(code:string): void {
-    this.foot.onActionCodeUp(code);
+  onCodeUp(code:string): void {
+    this.foot.onCodeUp(code);
   }
   onStamp():void{
     this.balloon.onStamp();

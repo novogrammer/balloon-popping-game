@@ -33,7 +33,7 @@ export default class Foot{
   update(_dt:number){
 
   }
-  onActionCodeDown(code:string){
+  onCodeDown(code:string){
     if(code!==this.targetCode){
       return;
     }
@@ -46,7 +46,7 @@ export default class Foot{
 
     this.objectLocation.onStamp();
   }
-  onActionCodeUp(code:string){
+  onCodeUp(code:string){
     if(code!==this.targetCode){
       return;
     }

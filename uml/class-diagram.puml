@@ -36,8 +36,8 @@ class ObjectLocation implements AddScoreListenerInterface{
   addScoreListener:AddScoreListenerInterface
   constructor(foot:Foot,balloon:Balloon)
   destroy():void
-  onActionCodeDown(code:string): void
-  onActionCodeUp(code:string): void
+  onCodeDown(code:string): void
+  onCodeUp(code:string): void
   onStamp():void
   update(dt:number:number):void
 }
@@ -47,8 +47,8 @@ class Foot{
   destroy():void
   setObjectLocation(objectLocation?:ObjectLocation):void
   update(dt:number:number):void
-  onActionCodeDown(code:string):void
-  onActionCodeUp(code:string):void
+  onCodeDown(code:string):void
+  onCodeUp(code:string):void
 }
 
 interface AddScoreListenerInterface{
