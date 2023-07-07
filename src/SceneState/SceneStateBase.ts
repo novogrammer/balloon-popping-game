@@ -1,6 +1,7 @@
+import KeyEventListenerInterface from "../KeyEventListenerInterface";
 import SceneContextInterface from "./SceneContextInterface";
 
-export default abstract class SceneStateBase{
+export default abstract class SceneStateBase implements KeyEventListenerInterface{
   sceneContext:SceneContextInterface;
   constructor(sceneContext:SceneContextInterface){
     this.sceneContext=sceneContext;

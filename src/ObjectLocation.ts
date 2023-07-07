@@ -1,6 +1,7 @@
 import Balloon from "./Balloon";
 import Foot from "./Foot";
 import AddScoreListenerInterface from "./AddScoreListenerInterface";
+import KeyEventListenerInterface from "./KeyEventListenerInterface";
 
 interface ObjectLocationParams{
   foot:Foot;
@@ -9,7 +10,7 @@ interface ObjectLocationParams{
   addScoreListener:AddScoreListenerInterface;
 }
 
-export default class ObjectLocation implements AddScoreListenerInterface{
+export default class ObjectLocation implements AddScoreListenerInterface,KeyEventListenerInterface{
   foot:Foot;
   balloon:Balloon;
   debugObjectLocation:HTMLElement;

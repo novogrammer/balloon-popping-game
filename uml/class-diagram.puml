@@ -1,6 +1,14 @@
 @startuml クラス図
 title クラス図
 
+interface AddScoreListenerInterface{
+  addScore(score:number):void
+}
+interface KeyEventListenerInterface{
+  onCodeDown(code:string):void
+  onCodeUp(code:string):void
+}
+
 abstract class BalloonStateBase{
   balloonContext:BalloonContextInterface
   abstract onBeginBalloonState():void
@@ -30,7 +38,7 @@ interface BalloonContextInterface extends AddScoreListenerInterface{
 
 
 
-class ObjectLocation implements AddScoreListenerInterface{
+class ObjectLocation implements AddScoreListenerInterface,KeyEventListenerInterface{
   foot:Foot
   balloon:Balloon
   addScoreListener:AddScoreListenerInterface
@@ -42,7 +50,7 @@ class ObjectLocation implements AddScoreListenerInterface{
   update(dt:number:number):void
 }
 
-class Foot{
+class Foot implements KeyEventListenerInterface{
   objectLocation:ObjectLocation
   destroy():void
   setObjectLocation(objectLocation?:ObjectLocation):void
@@ -94,7 +102,7 @@ interface PlayingContextInterface{
   goNextScene():void
 }
 
-abstract class SceneStateBase{
+abstract class SceneStateBase extends KeyEventListenerInterface{
   sceneContext:SceneContextInterface
 
   constructor(sceneContext:SceneContextInterface)

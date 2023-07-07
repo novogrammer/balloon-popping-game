@@ -1,3 +1,4 @@
+import KeyEventListenerInterface from "./KeyEventListenerInterface";
 import ObjectLocation from "./ObjectLocation";
 
 enum FootState{
@@ -5,7 +6,7 @@ enum FootState{
   Down="down",
 }
 
-export default class Foot{
+export default class Foot implements KeyEventListenerInterface{
   objectLocation:ObjectLocation|null=null;
   targetCode:string;
   footState:FootState;
