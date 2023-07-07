@@ -8,6 +8,7 @@ import { IS_DEBUG } from "./constants";
 import SceneContextInterface from "./SceneState/SceneContextInterface";
 import SceneStateBase from "./SceneState/SceneStateBase";
 import SceneStateTitle from "./SceneState/SceneStateTitle";
+import PlayerScoreInterface from "./PlayerScoreInterface";
 // import {ScrollTrigger} from "gsap/ScrollTrigger";
 // import {ScrollToPlugin} from "gsap/ScrollToPlugin";
 
@@ -32,6 +33,7 @@ export default class App implements SceneContextInterface{
   uiFootObjects?:UIFootObjects;
   uiSystemObjects?:UISystemObjects;
   stats?:Stats;
+  playerScoreList:PlayerScoreInterface[]=[];
   constructor(){
     console.log(THREE);
     console.log(Stats);
@@ -230,7 +232,11 @@ export default class App implements SceneContextInterface{
   getDebugViewElement(): HTMLDivElement {
     return this.debugViewElement;
   }
-  submitScore(_score:number,_name:string):void{
-
+  submitPlayerScore(playerScore:PlayerScoreInterface):void{
+    this.playerScoreList.push(playerScore);
   }
+  getPlayerScoreList(): PlayerScoreInterface[] {
+    return this.playerScoreList;
+  }
+
 }

@@ -59,9 +59,6 @@ class Foot implements KeyEventListenerInterface{
   onCodeUp(code:string):void
 }
 
-interface AddScoreListenerInterface{
-  addScore(score:number):void
-}
 
 class Balloon implements BalloonContextInterface{
   objectLocation:ObjectLocation
@@ -134,7 +131,8 @@ class SceneStateResult extends SceneStateBase{
 interface SceneContextInterface{
   --
   setNextSceneState(nextSeneState:SceneStateBase):void
-  submitScore(score:number,name:string):void
+  submitPlayerScore(playerScore:PlayerScoreInterface):void
+  getPlayerScoreList():PlayerScoreInterface[]
 }
 
 class App implements SceneContextInterface{

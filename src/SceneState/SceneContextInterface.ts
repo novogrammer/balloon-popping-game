@@ -1,6 +1,8 @@
+import PlayerScoreInterface from "../PlayerScoreInterface";
 import SceneStateBase from "./SceneStateBase";
 export default interface SceneContextInterface{
   setNextSceneState(nextSceneState:SceneStateBase|null):void;
   getDebugViewElement():HTMLDivElement;
-  submitScore(score:number,name:string):void;
+  submitPlayerScore(playerScore:PlayerScoreInterface):void;
+  getPlayerScoreList():PlayerScoreInterface[];
 }
