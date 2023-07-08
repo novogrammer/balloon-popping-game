@@ -31,6 +31,7 @@ export default class SceneStateResult extends SceneStateBase{
     this.debugName.classList.add("p-debug-view__name");
     this.debugPlayerScoreList=document.createElement("div");
     this.debugPlayerScoreList.classList.add("p-debug-view__player-score-list");
+    this.game2DSceneElement.classList.add("p-game2d-scene-result");
 
   }
   onBeginSceneState(): void {
@@ -45,6 +46,9 @@ export default class SceneStateResult extends SceneStateBase{
     debugViewElement.appendChild(this.debugScore);
     debugViewElement.appendChild(this.debugName);
     debugViewElement.appendChild(this.debugPlayerScoreList);
+
+    const game2DViewElement=this.sceneContext.getGame2DViewElement();
+    game2DViewElement.appendChild(this.game2DSceneElement);
     
   }
   onEndSceneState(): void {
@@ -56,6 +60,9 @@ export default class SceneStateResult extends SceneStateBase{
     debugViewElement.removeChild(this.debugScore);
     debugViewElement.removeChild(this.debugName);
     debugViewElement.removeChild(this.debugPlayerScoreList);
+
+    const game2DViewElement=this.sceneContext.getGame2DViewElement();
+    game2DViewElement.removeChild(this.game2DSceneElement);
 
     this.sceneContext.submitPlayerScore({
       name:this.name,

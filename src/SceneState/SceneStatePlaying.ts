@@ -52,6 +52,9 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
 
     this.debugScore=document.createElement("div");
     this.debugScore.classList.add("p-debug-view__score");
+
+    this.game2DSceneElement.classList.add("p-game2d-scene-playing");
+
     
   }
   onBeginSceneState(): void {
@@ -75,6 +78,9 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
     const debugObjectLocationL=document.createElement("div");
     debugObjectLocationL.classList.add("p-debug-view__object-location");
     this.debugObjectLocationList.appendChild(debugObjectLocationL);
+
+    const game2DViewElement=this.sceneContext.getGame2DViewElement();
+    game2DViewElement.appendChild(this.game2DSceneElement);
 
     this.objectLocationList=[
       new ObjectLocation({
@@ -115,6 +121,10 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
       objectLocation.destroy();
     }
     this.objectLocationList=[];
+
+    const game2DViewElement=this.sceneContext.getGame2DViewElement();
+    game2DViewElement.removeChild(this.game2DSceneElement);
+
   }
   onCodeDown(code:string): void {
     if(IS_DEBUG){

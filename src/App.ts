@@ -32,6 +32,9 @@ export default class App implements SceneContextInterface{
   uiViewElement:HTMLDivElement;
   uiFootObjects?:UIFootObjects;
   uiSystemObjects?:UISystemObjects;
+  game3DViewElement:HTMLCanvasElement;
+  game2DViewElement:HTMLDivElement;
+
   stats?:Stats;
   playerScoreList:PlayerScoreInterface[]=[];
   constructor(){
@@ -42,12 +45,22 @@ export default class App implements SceneContextInterface{
     if(!this.appElement){
       throw new Error("appElement is null");
     }
+    this.game3DViewElement=document.createElement("canvas");
+    this.game3DViewElement.classList.add("p-game3d-view");
+    this.appElement.appendChild(this.game3DViewElement);
+
+    this.game2DViewElement=document.createElement("div");
+    this.game2DViewElement.classList.add("p-game2d-view");
+    this.appElement.appendChild(this.game2DViewElement);
+    
     this.debugViewElement=document.createElement("div");
     this.debugViewElement.classList.add("p-debug-view");
     this.appElement.appendChild(this.debugViewElement);
+
     this.uiViewElement=document.createElement("div");
     this.uiViewElement.classList.add("p-ui-view");
     this.appElement.appendChild(this.uiViewElement);
+
     
     this.setupStats();
     this.setupUI();
@@ -231,6 +244,9 @@ export default class App implements SceneContextInterface{
   }
   getDebugViewElement(): HTMLDivElement {
     return this.debugViewElement;
+  }
+  getGame2DViewElement():HTMLDivElement{
+    return this.game2DViewElement;
   }
   submitPlayerScore(playerScore:PlayerScoreInterface):void{
     this.playerScoreList.push(playerScore);

@@ -11,6 +11,7 @@ export default class SceneStateTitle extends SceneStateBase{
     this.debugTitle=document.createElement("div");
     this.debugTitle.classList.add("p-debug-view__title");
     this.debugTitle.textContent="SceneStateTitle";
+    this.game2DSceneElement.classList.add("p-game2d-scene-title");
 
   }
   onBeginSceneState(): void {
@@ -19,6 +20,8 @@ export default class SceneStateTitle extends SceneStateBase{
     }
     const debugViewElement=this.sceneContext.getDebugViewElement();
     debugViewElement.appendChild(this.debugTitle);
+    const game2DViewElement=this.sceneContext.getGame2DViewElement();
+    game2DViewElement.appendChild(this.game2DSceneElement);
     
   }
   onEndSceneState(): void {
@@ -27,6 +30,8 @@ export default class SceneStateTitle extends SceneStateBase{
     }
     const debugViewElement=this.sceneContext.getDebugViewElement();
     debugViewElement.removeChild(this.debugTitle);
+    const game2DViewElement=this.sceneContext.getGame2DViewElement();
+    game2DViewElement.removeChild(this.game2DSceneElement);
     
   }
   onCodeDown(code:string): void {
