@@ -38,8 +38,10 @@ export default class SceneStateTitle extends SceneStateBase{
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onCodeDown`,code);
     }
-    const nextSceneState=new SceneStatePlaying(this.sceneContext);
-    this.sceneContext.setNextSceneState(nextSceneState);
+    if(["KeyJ","KeyK","KeyL"].includes(code)){
+      const nextSceneState=new SceneStatePlaying(this.sceneContext);
+      this.sceneContext.setNextSceneState(nextSceneState);
+    }
   }
   onCodeUp(code:string): void {
     if(IS_DEBUG){
