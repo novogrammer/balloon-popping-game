@@ -1,4 +1,122 @@
 @use "./global.scss" as *;
+
+@keyframes countdown-keyframes{
+  0%{
+    transform:translate(-50%,-50%) scale(2);
+    opacity:1;
+  }
+  50%{
+    transform:translate(-50%,-50%) scale(1);
+    opacity:1;
+  }
+  100%{
+    transform:translate(-50%,-50%) scale(1);
+    opacity:1;
+  }
+}
+@keyframes go-keyframes{
+  0%{
+    transform:translate(0%,-50%) skewX(-45deg);
+    opacity:1;
+  }
+  30%{
+    transform:translate(-50%,-50%) skewX(20deg);
+    opacity:1;
+  }
+  50%{
+    transform:translate(-50%,-50%);
+    opacity:1;
+  }
+  100%{
+    transform:translate(-50%,-50%);
+    opacity:0;
+  }
+}
+@keyframes timeover-keyframes{
+  0%{
+    opacity:0;
+    transform:translate(0%,-50%) scale(1.5);
+  }
+  100%{
+    transform:translate(0%,-50%) scale(1);
+  }
+}
+
+
 .p-game2d-scene-playing{
-  background:rgba(0,0,255,0.25);
+  &__countdown{
+    position:absolute;
+    left:50%;
+    top:50%;
+    opacity:0;
+    transform:transform(-50%,-50%);
+    font-size:20vw;
+    animation: {
+      name:countdown-keyframes;
+      duration:1s;
+      iteration-count:1;
+      fill-mode:none;
+    }
+    &--3{
+      animation: {
+        delay:0s;
+      }
+    }
+    &--2{
+      animation: {
+        delay:1s;
+      }
+    }
+    &--1{
+      animation: {
+        delay:2s;
+      }
+    }
+  }
+  &__go{
+    transform-origin: center bottom;
+    position:absolute;
+    left:50%;
+    top:50%;
+    opacity:0;
+    font-size:20vw;
+    transform:transform(-50%,-50%);
+    animation: {
+      name:go-keyframes;
+      duration:1s;
+      iteration-count:1;
+      fill-mode:none;
+      timing-function: linear;
+    }
+
+  }
+  &__timeover{
+    position:absolute;
+    left:0;
+    top:50%;
+    width:100%;
+    font-size:10vw;
+    text-align: center;
+    transform:transform(0%,-50%);
+    animation: {
+      name:timeover-keyframes;
+      duration:1s;
+      iteration-count:1;
+      fill-mode:forwards;
+      timing-function: linear;
+    }
+
+  }
+  &__score{
+    position:absolute;
+    left:0;
+    top:0;
+    font-size:5vw;
+  }
+  &__time{
+    position:absolute;
+    left:74vw;
+    top:0;
+    font-size:5vw;
+  }
 }

@@ -10,6 +10,7 @@ export default class PlayingStateTimeover extends PlayingStateBase{
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onBeginPlayingState`);
     }
+    this.playingContext.showTimeover();
   }
   onEndPlayingState():void{
     if(IS_DEBUG){

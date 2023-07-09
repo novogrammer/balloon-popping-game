@@ -11,8 +11,25 @@ export default class SceneStateTitle extends SceneStateBase{
     this.debugTitle=document.createElement("div");
     this.debugTitle.classList.add("p-debug-view__title");
     this.debugTitle.textContent="SceneStateTitle";
+    this.setupGame2DScene();
+  }
+  setupGame2DScene(){
     this.game2DSceneElement.classList.add("p-game2d-scene-title");
 
+    const titleElement=document.createElement("div");
+    titleElement.classList.add("p-game2d-scene-title__title");
+    titleElement.textContent="Balloon Popping Game";
+    this.game2DSceneElement.appendChild(titleElement);
+
+    const copyrightElement=document.createElement("div");
+    copyrightElement.classList.add("p-game2d-scene-title__copyright");
+    copyrightElement.textContent="novogrammer 2023";
+    this.game2DSceneElement.appendChild(copyrightElement);
+
+    const orderElement=document.createElement("div");
+    orderElement.classList.add("p-game2d-scene-title__order");
+    orderElement.textContent="PUSH ANY BUTTON";
+    this.game2DSceneElement.appendChild(orderElement);
   }
   onBeginSceneState(): void {
     if(IS_DEBUG){

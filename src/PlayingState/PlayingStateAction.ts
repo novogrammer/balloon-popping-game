@@ -11,6 +11,7 @@ export default class PlayingStateAction extends PlayingStateBase{
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onBeginPlayingState`);
     }
+    this.playingContext.showGo();
   }
   onEndPlayingState():void{
     if(IS_DEBUG){

@@ -6,4 +6,6 @@ export default interface PlayingContextInterface{
   updateTimeoutTime(dt:number):boolean;
   setNextPlayingState(nextPlayingState:PlayingStateBase|null):void;
   goNextScene():void;
+  showGo():void;
+  showTimeover():void;
 }

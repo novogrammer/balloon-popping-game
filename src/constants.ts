@@ -26,6 +26,19 @@ export const NAME_INPUT_CHARACTOR_LIST:InputCharactorInterface[]=
   },
 ]);
 
+export const RANK_TEXT_LIST=[
+  "1st",
+  "2nd",
+  "3rd",
+  "4th",
+  "5th",
+  "6th",
+  "7th",
+  "8th",
+  "9th",
+  "10th",
+];
+
 export const INPUT_BLINK_CYCLE=0.25;
 
 

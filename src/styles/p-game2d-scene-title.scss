@@ -1,4 +1,29 @@
 @use "./global.scss" as *;
 .p-game2d-scene-title{
-  background:rgba(255,0,0,0.25);
+  &__title{
+    position:absolute;
+    left:0;
+    top:50%;
+    width:100%;
+    transform:translate(0,-20vh);
+    font-size:5vw;
+    text-align: center;
+  }
+  &__order{
+    position:absolute;
+    left:0;
+    top:50%;
+    width:100%;
+    transform:translate(0,10vh);
+    font-size:2.5vw;
+    text-align: center;
+  }
+  &__copyright{
+    position:absolute;
+    left:0;
+    bottom:10vh;
+    width:100%;
+    font-size:2.5vw;
+    text-align: center;
+  }
 }

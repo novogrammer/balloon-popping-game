@@ -97,6 +97,8 @@ interface PlayingContextInterface{
   updateTimeoutTime(dt:number):boolean
   setNextPlayingState(nextPlayingState:PlayingStateBase):void
   goNextScene():void
+  showGo():void
+  showTimeover():void
 }
 
 abstract class SceneStateBase extends KeyEventListenerInterface{

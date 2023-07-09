@@ -1,6 +1,6 @@
 import InputCharactorInterface from "../InputCharactorInterface";
 import PlayerScoreInterface from "../PlayerScoreInterface";
-import { INPUT_BLINK_CYCLE, IS_DEBUG, NAME_INPUT_CHARACTOR_LIST, NAME_LENGTH, RESULT_PLAYER_SCORE_LIST_QTY } from "../constants";
+import { INPUT_BLINK_CYCLE, IS_DEBUG, NAME_INPUT_CHARACTOR_LIST, NAME_LENGTH, RANK_TEXT_LIST, RESULT_PLAYER_SCORE_LIST_QTY } from "../constants";
 import SceneContextInterface from "./SceneContextInterface";
 import SceneStateBase from "./SceneStateBase";
 import SceneStateTitle from "./SceneStateTitle";
@@ -31,7 +31,25 @@ export default class SceneStateResult extends SceneStateBase{
     this.debugName.classList.add("p-debug-view__name");
     this.debugPlayerScoreList=document.createElement("div");
     this.debugPlayerScoreList.classList.add("p-debug-view__player-score-list");
+
+    this.setupGame2DScene();
+  }
+  setupGame2DScene(){
     this.game2DSceneElement.classList.add("p-game2d-scene-result");
+
+
+    const nameElement=document.createElement("div");
+    nameElement.classList.add("p-game2d-scene-result__name");
+    this.game2DSceneElement.appendChild(nameElement);
+
+    const scoreElement=document.createElement("div");
+    scoreElement.classList.add("p-game2d-scene-result__score");
+    scoreElement.textContent=`SCORE: ${this.score}`;
+    this.game2DSceneElement.appendChild(scoreElement);
+
+    const playerScoreListElement=document.createElement("div");
+    playerScoreListElement.classList.add("p-game2d-scene-result__player-score-list");
+    this.game2DSceneElement.appendChild(playerScoreListElement);
 
   }
   onBeginSceneState(): void {
@@ -40,6 +58,35 @@ export default class SceneStateResult extends SceneStateBase{
     }
 
     this.playerScoreList=this.sceneContext.getPlayerScoreList().concat().sort((a,b)=>b.score - a.score).filter((_playerScore,index)=>index<RESULT_PLAYER_SCORE_LIST_QTY);
+
+    {
+      const playerScoreListElement=this.game2DSceneElement.querySelector(".p-game2d-scene-result__player-score-list");
+      if(!playerScoreListElement){
+        throw new Error("playerScoreListElement is null");
+      }
+
+      for(let [index,playerScore] of this.playerScoreList.entries()){
+        const playerScoreElement=document.createElement("div");
+        playerScoreElement.classList.add("p-game2d-scene-result__player-score");
+        playerScoreListElement.appendChild(playerScoreElement);
+
+        const rankElement=document.createElement("div");
+        rankElement.classList.add("p-game2d-scene-result__player-score-rank");
+        rankElement.textContent=`${RANK_TEXT_LIST[index]}`;
+        playerScoreElement.appendChild(rankElement);
+
+        const nameElement=document.createElement("div");
+        nameElement.classList.add("p-game2d-scene-result__player-score-name");
+        nameElement.textContent=playerScore.name;
+        playerScoreElement.appendChild(nameElement);
+
+        const scoreElement=document.createElement("div");
+        scoreElement.classList.add("p-game2d-scene-result__player-score-score");
+        scoreElement.textContent=`${playerScore.score}`;
+        playerScoreElement.appendChild(scoreElement);
+
+      }
+    }
 
     const debugViewElement=this.sceneContext.getDebugViewElement();
     debugViewElement.appendChild(this.debugTitle);
@@ -115,6 +162,15 @@ export default class SceneStateResult extends SceneStateBase{
     this.debugName.textContent=`name: ${this.name}${inputCharactor}`;
     this.debugScore.textContent=`score: ${this.score}`;
     this.debugPlayerScoreList.innerHTML=`playerScoreList:<br>`+this.playerScoreList.map((playerScore)=>`${playerScore.name}:${playerScore.score}`).join("<br>");
+
+    {
+      const nameElement=document.querySelector(".p-game2d-scene-result__name");
+      if(!nameElement){
+        throw new Error("nameElement is null");
+      }
+      nameElement.textContent=`NAME: ${this.name}${inputCharactor}`;
+    }
+
     this.timeForAnimation+=dt;
   }
 }

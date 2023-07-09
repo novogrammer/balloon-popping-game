@@ -53,9 +53,30 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
     this.debugScore=document.createElement("div");
     this.debugScore.classList.add("p-debug-view__score");
 
+    this.setupGame2DScene();
+    
+  }
+  setupGame2DScene(){
     this.game2DSceneElement.classList.add("p-game2d-scene-playing");
 
-    
+    for(let n=1;n<=3;n+=1){
+      const countdownElement=document.createElement("div");
+      countdownElement.classList.add("p-game2d-scene-playing__countdown");
+      countdownElement.classList.add(`p-game2d-scene-playing__countdown--${n}`);
+      countdownElement.textContent=`${n}`
+      this.game2DSceneElement.appendChild(countdownElement);
+    }
+
+    const scoreElement=document.createElement("div");
+    scoreElement.classList.add("p-game2d-scene-playing__score");
+    this.game2DSceneElement.appendChild(scoreElement);
+
+    const timeElement=document.createElement("div");
+    timeElement.classList.add("p-game2d-scene-playing__time");
+    this.game2DSceneElement.appendChild(timeElement);
+
+
+
   }
   onBeginSceneState(): void {
     if(IS_DEBUG){
@@ -157,17 +178,32 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
   update(dt:number):void{
     if(this.currentPlayingState){
       this.currentPlayingState.update(dt);
-      if(this.currentPlayingState.isInAction()){
-        for(let objectLocation of this.objectLocationList){
-          objectLocation.update(dt);
-        }
+    }
+    if(this.currentPlayingState && this.currentPlayingState.isInAction()){
+      for(let objectLocation of this.objectLocationList){
+        objectLocation.update(dt);
       }
-      }
-    
+    }
+  
     this.debugCountdownTime.textContent=`countdown time: ${this.countdownTime}`;
     this.debugGameTime.textContent=`game time: ${this.gameTime}`;
     this.debugTimeoutTime.textContent=`timeout time: ${this.timeoutTime}`;
     this.debugScore.textContent=`score: ${this.score}`;
+
+    {
+      const scoreElement=this.game2DSceneElement.querySelector(".p-game2d-scene-playing__score");
+      if(!scoreElement){
+        throw new Error("scoreElement is null");
+      }
+      scoreElement.textContent=`SCORE: ${this.score}`;
+    }
+    {
+      const timeElement=this.game2DSceneElement.querySelector(".p-game2d-scene-playing__time");
+      if(!timeElement){
+        throw new Error("timeElement is null");
+      }
+      timeElement.textContent=`TIME: ${Math.ceil(this.gameTime)}`;
+    }
     
   }
   updateCountdownTime(dt: number): boolean {
@@ -206,5 +242,18 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
   }
   addScore(score: number): void {
     this.score+=score;
+  }
+  showGo(): void {
+    const goElement=document.createElement("div");
+    goElement.classList.add("p-game2d-scene-playing__go");
+    goElement.textContent="GO!";
+    this.game2DSceneElement.appendChild(goElement);
+  }
+  showTimeover():void{
+    const timeoverElement=document.createElement("div");
+    timeoverElement.classList.add("p-game2d-scene-playing__timeover");
+    timeoverElement.textContent="TIME OVER!";
+    this.game2DSceneElement.appendChild(timeoverElement);
+
   }
 }
