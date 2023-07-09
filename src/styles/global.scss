@@ -1,2 +1,13 @@
 
 $BORDER_RADIUS:1vw;
+
+$FONT_FAMILY_MOCHIY_POP_ONE:'Mochiy Pop One';
+$FONT_FAMILY_NOTO_SANS_JP:'Noto Sans JP';
+
+@mixin fontMochiyPopOne(){
+  font-family: $FONT_FAMILY_MOCHIY_POP_ONE, sans-serif;
+}
+
+@mixin fontNotoSansJp(){
+  font-family: $FONT_FAMILY_NOTO_SANS_JP, sans-serif;
+}

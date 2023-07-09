@@ -1,4 +1,6 @@
+@use "./global.scss" as *;
 
 body{
   margin:0;
+  @include fontNotoSansJp();
 }
