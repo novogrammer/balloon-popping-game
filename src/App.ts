@@ -3,12 +3,18 @@ import * as THREE from "three";
 
 import Stats from "stats.js";
 
+import { FirebaseApp, initializeApp } from "firebase/app";
+import { Analytics, getAnalytics } from "firebase/analytics";
+import {Firestore, addDoc, collection, getFirestore, onSnapshot} from "firebase/firestore";
+
+
 import {gsap} from "gsap";
 import { IS_DEBUG } from "./constants";
 import SceneContextInterface from "./SceneState/SceneContextInterface";
 import SceneStateBase from "./SceneState/SceneStateBase";
 import SceneStateTitle from "./SceneState/SceneStateTitle";
 import PlayerScoreInterface from "./PlayerScoreInterface";
+import { firebaseConfig } from "./firebase_constants";
 // import {ScrollTrigger} from "gsap/ScrollTrigger";
 // import {ScrollToPlugin} from "gsap/ScrollToPlugin";
 
@@ -24,6 +30,11 @@ interface UISystemObjects{
   buttonToggleUIElement:HTMLButtonElement;
 }
 
+interface FirebaseObjects{
+  app:FirebaseApp,
+  analytics:Analytics,
+  firestore:Firestore,
+}
 
 export default class App implements SceneContextInterface{
   currentSceneState:SceneStateBase|null=null;
@@ -37,6 +48,8 @@ export default class App implements SceneContextInterface{
 
   stats?:Stats;
   playerScoreList:PlayerScoreInterface[]=[];
+
+  firebaseObjects?:FirebaseObjects;
   constructor(){
     console.log(THREE);
     console.log(Stats);
@@ -63,9 +76,28 @@ export default class App implements SceneContextInterface{
 
     
     this.setupStats();
+    this.setupFirebase();
     this.setupUI();
     this.setupEvents();
     this.setNextSceneState(new SceneStateTitle(this))
+  }
+  setupFirebase(){
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const firestore = getFirestore(app);
+    onSnapshot(collection(firestore,"playerScores"),(querySnapshot)=>{
+      this.playerScoreList=[];
+      querySnapshot.forEach((doc) => {
+        const data=doc.data() as PlayerScoreInterface;
+        // console.log(data);
+        this.playerScoreList.push(data);
+      });
+    });
+    this.firebaseObjects={
+      app,
+      analytics,
+      firestore,
+    }
   }
   onKeyDown(event:KeyboardEvent){
     if(IS_DEBUG){
@@ -249,7 +281,12 @@ export default class App implements SceneContextInterface{
     return this.game2DViewElement;
   }
   submitPlayerScore(playerScore:PlayerScoreInterface):void{
-    this.playerScoreList.push(playerScore);
+    if(!this.firebaseObjects){
+      throw new Error("firebaseObjects is null");
+    }
+    const {firestore}=this.firebaseObjects;
+    addDoc(collection(firestore, "playerScores"),playerScore);
+
   }
   getPlayerScoreList(): PlayerScoreInterface[] {
     return this.playerScoreList;
