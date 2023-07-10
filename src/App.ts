@@ -8,13 +8,14 @@ import { Analytics, getAnalytics } from "firebase/analytics";
 import {Firestore, addDoc, collection, getFirestore, onSnapshot} from "firebase/firestore";
 
 
-import {gsap} from "gsap";
-import { IS_DEBUG } from "./constants";
+// import {gsap} from "gsap";
+import { FOVY, IS_DEBUG } from "./constants";
 import SceneContextInterface from "./SceneState/SceneContextInterface";
 import SceneStateBase from "./SceneState/SceneStateBase";
 import SceneStateTitle from "./SceneState/SceneStateTitle";
 import PlayerScoreInterface from "./PlayerScoreInterface";
 import { firebaseConfig } from "./firebase_constants";
+import ElementSizeObserver from "./ElementSizeObserver";
 // import {ScrollTrigger} from "gsap/ScrollTrigger";
 // import {ScrollToPlugin} from "gsap/ScrollToPlugin";
 
@@ -36,6 +37,12 @@ interface FirebaseObjects{
   firestore:Firestore,
 }
 
+interface ThreeObjects{
+  renderer: THREE.WebGLRenderer;
+  camera: THREE.PerspectiveCamera;
+  scene: THREE.Scene;
+}
+
 export default class App implements SceneContextInterface{
   currentSceneState:SceneStateBase|null=null;
   appElement:HTMLDivElement;
@@ -43,8 +50,12 @@ export default class App implements SceneContextInterface{
   uiViewElement:HTMLDivElement;
   uiFootObjects?:UIFootObjects;
   uiSystemObjects?:UISystemObjects;
-  game3DViewElement:HTMLCanvasElement;
+  game3DViewElement:HTMLDivElement;
   game2DViewElement:HTMLDivElement;
+
+  threeObjects?:ThreeObjects;
+
+  elementSizeObserver:ElementSizeObserver;
 
   stats?:Stats;
   playerScoreList:PlayerScoreInterface[]=[];
@@ -52,13 +63,11 @@ export default class App implements SceneContextInterface{
   firebaseObjects?:FirebaseObjects;
   constructor(){
     console.log(THREE);
-    console.log(Stats);
-    console.log(gsap);
     this.appElement=document.querySelector<HTMLDivElement>("#app")!;
     if(!this.appElement){
       throw new Error("appElement is null");
     }
-    this.game3DViewElement=document.createElement("canvas");
+    this.game3DViewElement=document.createElement("div");
     this.game3DViewElement.classList.add("p-game3d-view");
     this.appElement.appendChild(this.game3DViewElement);
 
@@ -74,10 +83,14 @@ export default class App implements SceneContextInterface{
     this.uiViewElement.classList.add("p-ui-view");
     this.appElement.appendChild(this.uiViewElement);
 
+    this.elementSizeObserver = new ElementSizeObserver({
+      elementForSize: this.game3DViewElement,
+    });
     
     this.setupStats();
     this.setupFirebase();
     this.setupUI();
+    this.setupThree();
     this.setupEvents();
     this.setNextSceneState(new SceneStateTitle(this))
   }
@@ -190,6 +203,33 @@ export default class App implements SceneContextInterface{
     }
 
   }
+  setupThree(){
+
+    const size = this.elementSizeObserver.getSize();
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(FOVY, size.width / size.height, 0.1, 1000);
+    camera.position.z=5;
+    scene.add(camera);
+
+    const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+    const cube = new THREE.Mesh( geometry, material );
+    scene.add( cube );
+
+    const renderer = new THREE.WebGLRenderer({
+      alpha: false,
+    });
+    renderer.domElement.classList.add("p-game3d-view__canvas");
+    this.game3DViewElement.appendChild(renderer.domElement);
+
+    this.threeObjects={
+      renderer,
+      camera,
+      scene,
+    }
+
+  }
   setupEvents(){
     document.addEventListener("keydown",this.onKeyDown.bind(this));
     document.addEventListener("keyup",this.onKeyUp.bind(this));
@@ -239,6 +279,7 @@ export default class App implements SceneContextInterface{
       });
 
     }
+    this.elementSizeObserver.onResize=this.onResize.bind(this);
 
     let previousTime=performance.now() * 0.001;
     const animate = () => {
@@ -248,6 +289,7 @@ export default class App implements SceneContextInterface{
       requestAnimationFrame(animate);
       const currentTime=performance.now() * 0.001;
       const dt=currentTime-previousTime;
+      this.elementSizeObserver.update();
       this.update(dt);
       previousTime=currentTime;
       if(this.stats){
@@ -262,6 +304,11 @@ export default class App implements SceneContextInterface{
     if(this.currentSceneState){
       this.currentSceneState.update(dt);
     }
+    if (!this.threeObjects) {
+      throw new Error("this.threeObjects is null");
+    }
+    const {renderer,scene,camera}=this.threeObjects;
+    renderer.render(scene, camera);
 
   }
 
@@ -290,6 +337,20 @@ export default class App implements SceneContextInterface{
   }
   getPlayerScoreList(): PlayerScoreInterface[] {
     return this.playerScoreList;
+  }
+  onResize(){
+    if (!this.threeObjects) {
+      throw new Error("this.threeObjects is null");
+    }
+    const { renderer, camera } = this.threeObjects;
+    const size = this.elementSizeObserver.getSize();
+    if (IS_DEBUG) {
+      console.log("onResize", size.width, size.height);
+    }
+    renderer.setSize(size.width, size.height);
+    camera.aspect = size.width / size.height;
+    camera.updateProjectionMatrix();
+
   }
 
 }

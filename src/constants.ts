@@ -2,6 +2,8 @@ import InputCharactorInterface from "./InputCharactorInterface";
 
 export const IS_DEBUG=true;
 
+export const FOVY=60;
+
 export const COUNTDOWN_DURATION=3;
 export const GAME_DURATION=3;
 export const TIMEOUT_DURATION=3;
