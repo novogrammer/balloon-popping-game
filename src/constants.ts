@@ -18,15 +18,11 @@ export const NAME_LENGTH=3;
 export const NAME_INPUT_CHARACTOR_LIST:InputCharactorInterface[]=
 (
   "ABCDEFGHIJKLMNOPQRSTUVWXYZ"+
-  "0123456789"
+  "0123456789"+
+  "!?._"
 )
 .split("")
-.map((c)=>({label:c,charactor:c})).concat([
-  {
-    label:"_",
-    charactor:" ",
-  },
-]);
+.map((c)=>({label:c,charactor:c})).concat([]);
 
 export const RANK_TEXT_LIST=[
   "1st",

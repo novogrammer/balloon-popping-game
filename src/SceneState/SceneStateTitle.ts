@@ -23,7 +23,7 @@ export default class SceneStateTitle extends SceneStateBase{
 
     const copyrightElement=document.createElement("div");
     copyrightElement.classList.add("p-game2d-scene-title__copyright");
-    copyrightElement.textContent="novogrammer 2023";
+    copyrightElement.textContent="2023 novogrammer";
     this.game2DSceneElement.appendChild(copyrightElement);
 
     const orderElement=document.createElement("div");
