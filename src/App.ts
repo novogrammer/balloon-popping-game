@@ -1,5 +1,7 @@
 
 import * as THREE from "three";
+import { GroundProjectedSkybox } from 'three/addons/objects/GroundProjectedSkybox.js';
+import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
 import Stats from "stats.js";
 
@@ -207,19 +209,117 @@ export default class App implements SceneContextInterface{
 
     const size = this.elementSizeObserver.getSize();
 
+    THREE.ColorManagement.enabled=true;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(FOVY, size.width / size.height, 0.1, 1000);
+    camera.name="MainCamera";
+    camera.position.y=2;
     camera.position.z=5;
     scene.add(camera);
 
-    const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-    const cube = new THREE.Mesh( geometry, material );
-    scene.add( cube );
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+    ambientLight.name="AmbientLight";
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(-10, 10, 10);
+    directionalLight.castShadow=true;
+    directionalLight.shadow.camera.top = 10;
+    directionalLight.shadow.camera.bottom = - 10;
+    directionalLight.shadow.camera.left = - 10;
+    directionalLight.shadow.camera.right = 10;
+    directionalLight.shadow.camera.near = 0.1;
+    directionalLight.shadow.camera.far = 40;    
+    directionalLight.name="DirectionalLight";
+    scene.add(directionalLight);
+
+    const hdrLoader = new RGBELoader();
+    hdrLoader.loadAsync( 'textures/equirectangular/blouberg_sunrise_2_1k.hdr' ).then((envMap:THREE.Texture)=>{
+      envMap.mapping = THREE.EquirectangularReflectionMapping;
+      const skybox=new GroundProjectedSkybox(envMap);
+      skybox.scale.setScalar(100);
+      skybox.name="Skybox";
+      scene.add(skybox);
+      scene.environment=envMap;
+    });
+
+    const ground=(()=>{
+      const geometry = new THREE.BoxGeometry( 10, 1, 10 );
+
+      const base="./textures/polyhaven/red_brick_03_1k/";
+      const prefix="red_brick_03_";
+      const diff=new THREE.TextureLoader().load(`${base}${prefix}diff_1k.jpg`);
+      const nor=new THREE.TextureLoader().load(`${base}${prefix}nor_gl_1k.png`);
+      const rough=new THREE.TextureLoader().load(`${base}${prefix}rough_1k.png`);
+      const metal=new THREE.TextureLoader().load(`${base}${prefix}metal_1k.png`);
+
+
+      const material = new THREE.MeshStandardMaterial({
+        map:diff,
+        normalMap:nor,
+        roughnessMap:rough,
+        metalnessMap:metal,
+      });
+      geometry.translate(0,-0.5,0);
+      const mesh = new THREE.Mesh( geometry, material );
+      mesh.receiveShadow=true;
+      return mesh;
+    })();
+    scene.add(ground);
+
+    const balloonMaterialMesh=(()=>{
+      const geometry = new THREE.IcosahedronGeometry( 1, 5 );
+      const material = new THREE.MeshPhysicalMaterial({
+        color: 0xf02020,
+        roughness:0.2,
+        metalness:0,
+        reflectivity:0.5,
+        clearcoat:0.25,
+        clearcoatRoughness:0.2,
+      });
+      const mesh = new THREE.Mesh( geometry, material );
+      mesh.position.y=1;
+      mesh.castShadow=true;
+      mesh.receiveShadow=true;
+      mesh.name="BalloonMaterialMesh";
+      return mesh;
+    })();
+
+    scene.add( balloonMaterialMesh );
+
+
+    const footMaterialMesh=(()=>{
+      const geometry = new THREE.BoxGeometry( 1, 1, 2 );
+
+      const base="./textures/polyhaven/metal_plate_1k/";
+      const prefix="metal_plate_";
+      const diff=new THREE.TextureLoader().load(`${base}${prefix}diff_1k.jpg`);
+      const nor=new THREE.TextureLoader().load(`${base}${prefix}nor_gl_1k.png`);
+      const rough=new THREE.TextureLoader().load(`${base}${prefix}rough_1k.png`);
+      const metal=new THREE.TextureLoader().load(`${base}${prefix}metal_1k.png`);
+
+
+      const material = new THREE.MeshStandardMaterial({
+        map:diff,
+        normalMap:nor,
+        roughnessMap:rough,
+        metalnessMap:metal,
+      });
+      const mesh = new THREE.Mesh( geometry, material );
+      mesh.position.x=2;
+      mesh.position.y=2;
+      mesh.castShadow=true;
+      mesh.receiveShadow=true;
+      return mesh;
+    })();
+    scene.add(footMaterialMesh);
+
 
     const renderer = new THREE.WebGLRenderer({
       alpha: false,
+      antialias:true,
     });
+    renderer.shadowMap.enabled=true;
     renderer.domElement.classList.add("p-game3d-view__canvas");
     this.game3DViewElement.appendChild(renderer.domElement);
 
@@ -308,6 +408,7 @@ export default class App implements SceneContextInterface{
       throw new Error("this.threeObjects is null");
     }
     const {renderer,scene,camera}=this.threeObjects;
+
     renderer.render(scene, camera);
 
   }
@@ -327,9 +428,16 @@ export default class App implements SceneContextInterface{
   getGame2DViewElement():HTMLDivElement{
     return this.game2DViewElement;
   }
+  getThreeScene():THREE.Scene{
+    if (!this.threeObjects) {
+      throw new Error("this.threeObjects is null");
+    }
+    const {scene}=this.threeObjects;
+    return scene;
+  }
   submitPlayerScore(playerScore:PlayerScoreInterface):void{
     if(!this.firebaseObjects){
-      throw new Error("firebaseObjects is null");
+      throw new Error("this.firebaseObjects is null");
     }
     const {firestore}=this.firebaseObjects;
     addDoc(collection(firestore, "playerScores"),playerScore);
