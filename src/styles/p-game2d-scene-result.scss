@@ -16,6 +16,7 @@
     left:25vw;
     width:50vw;
     font-size:5vw;
+    white-space: pre;
     @media (orientation: landscape) {
       left:10vw;
     }
@@ -44,6 +45,7 @@
     text-align: right;
   }
   &__player-score-name{
+    white-space: pre;
     width:3em;
   }
   &__player-score-score{
