@@ -126,7 +126,7 @@ export default class Balloon implements BalloonContextInterface{
       },{
         x:0+Math.cos(angle)*STAR_EFFECT_MOVE_LENGTH,
         y:0.5+Math.sin(angle)*STAR_EFFECT_MOVE_LENGTH,
-        duration:POPPING_DURATION,
+        duration:POPPING_DURATION*0.5,
         ease:"power3.out",
       });
       gsap.fromTo(starMesh.material,{

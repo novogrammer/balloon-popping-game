@@ -3,7 +3,7 @@ import {gsap} from "gsap";
 import FootMesh from "./FootMesh";
 import KeyEventListenerInterface from "./KeyEventListenerInterface";
 import ObjectLocation from "./ObjectLocation";
-import { FOOT_LIFT_Y, FOOT_MOVE_DURATION } from "./constants";
+import { FOOT_LIFT_Y, FOOT_MOVE_DOWN_DURATION, FOOT_MOVE_UP_DURATION } from "./constants";
 
 enum FootState{
   Up="up",
@@ -56,7 +56,7 @@ export default class Foot implements KeyEventListenerInterface{
 
     gsap.to(this.footMesh.position,{
       y:0,
-      duration:FOOT_MOVE_DURATION,
+      duration:FOOT_MOVE_DOWN_DURATION,
       ease:"bounce.out",
     });
     
@@ -73,7 +73,7 @@ export default class Foot implements KeyEventListenerInterface{
 
     gsap.to(this.footMesh.position,{
       y:FOOT_LIFT_Y,
-      duration:FOOT_MOVE_DURATION,
+      duration:FOOT_MOVE_UP_DURATION,
       ease:"power2.out",
     });
   }
