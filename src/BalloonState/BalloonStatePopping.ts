@@ -16,6 +16,7 @@ export default class BalloonStatePopping extends BalloonStateBase{
     }
     this.balloonContext.addDebugModifier("popping");
     this.balloonContext.addScore(1);
+    this.balloonContext.startPoppingAnimation();
   }
   onEndBalloonState(): void {
     if(IS_DEBUG){

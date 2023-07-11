@@ -19,6 +19,7 @@ import PlayerScoreInterface from "./PlayerScoreInterface";
 import { firebaseConfig } from "./firebase_constants";
 import ElementSizeObserver from "./ElementSizeObserver";
 import BalloonMesh from "./BalloonMesh";
+import StarMesh from "./StarMesh";
 // import {ScrollTrigger} from "gsap/ScrollTrigger";
 // import {ScrollToPlugin} from "gsap/ScrollToPlugin";
 
@@ -268,12 +269,15 @@ export default class App implements SceneContextInterface{
     })();
     scene.add(ground);
 
-    const balloonMesh=new BalloonMesh();
-    balloonMesh.castShadow=true;
-    balloonMesh.receiveShadow=true;
-    balloonMesh.name="BalloonMesh";
+    // const balloonMesh=new BalloonMesh();
+    // balloonMesh.castShadow=true;
+    // balloonMesh.receiveShadow=true;
+    // balloonMesh.name="BalloonMesh";
+    // scene.add( balloonMesh );
 
-    scene.add( balloonMesh );
+    // const starMesh=new StarMesh();
+    // starMesh.position.y=2;
+    // scene.add(starMesh);
 
 
     const renderer = new THREE.WebGLRenderer({

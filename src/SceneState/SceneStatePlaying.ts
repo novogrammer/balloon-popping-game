@@ -125,10 +125,7 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
     ];
     this.setNextPlayingState(new PlayingStateCountdown(this));
     const scene=this.sceneContext.getThreeScene();
-    const size=this.sceneContext.getViewSize();
-    for(let [index,objectLocation] of this.objectLocationList.entries()){
-      const x=(index-1)*size.width/size.height*GAME_HEIGHT*0.5;
-      objectLocation.objectLocationGroup.position.x=x;
+    for(let objectLocation of this.objectLocationList){
       scene.add(objectLocation.objectLocationGroup);
     }
     
@@ -192,11 +189,15 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
     if(this.currentPlayingState){
       this.currentPlayingState.update(dt);
     }
-    if(this.currentPlayingState && this.currentPlayingState.isInAction()){
-      for(let objectLocation of this.objectLocationList){
-        objectLocation.update(dt);
+    const size=this.sceneContext.getViewSize();
+    for(let [index,objectLocation] of this.objectLocationList.entries()){
+      const x=(index-1)*size.width/size.height*GAME_HEIGHT*0.5;
+      objectLocation.objectLocationGroup.position.x=x;
+      if(this.currentPlayingState && this.currentPlayingState.isInAction()){
+          objectLocation.update(dt);
       }
     }
+
   
     this.debugCountdownTime.textContent=`countdown time: ${this.countdownTime}`;
     this.debugGameTime.textContent=`game time: ${this.gameTime}`;

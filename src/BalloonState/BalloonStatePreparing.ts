@@ -15,6 +15,7 @@ export default class BalloonStatePreparing extends BalloonStateBase{
       console.log(`${this.constructor.name}.onBeginBalloonState`);
     }
     this.balloonContext.addDebugModifier("preparing");
+    this.balloonContext.startPreparingAnimation();
   }
   onEndBalloonState(): void {
     if(IS_DEBUG){

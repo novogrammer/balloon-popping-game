@@ -4,4 +4,8 @@ export default interface BalloonContextInterface extends AddScoreListenerInterfa
   setNextBalloonState(nextBalloonState:BalloonStateBase|null):void;
   addDebugModifier(modifier:string):void;
   removeDebugModifier(modifier:string):void;
+  startPreparingAnimation():void;
+  startReadyAnimation():void;
+  startAwayAnimation():void;
+  startPoppingAnimation():void;
 }

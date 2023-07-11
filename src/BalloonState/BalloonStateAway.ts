@@ -15,6 +15,7 @@ export default class BalloonStateAway extends BalloonStateBase{
       console.log(`${this.constructor.name}.onBeginBalloonState`);
     }
     this.balloonContext.addDebugModifier("away");
+    this.balloonContext.startAwayAnimation();
   }
   onEndBalloonState(): void {
     if(IS_DEBUG){
