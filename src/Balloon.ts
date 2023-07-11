@@ -15,15 +15,15 @@ export default class Balloon implements BalloonContextInterface{
   baseGroup:THREE.Group;
   balloonMesh:BalloonMesh;
   starMeshList:StarMesh[];
-  constructor(){
+  constructor(originalBalloonMesh:BalloonMesh,originalStarMesh:StarMesh){
     this.debugBalloon=document.createElement("div");
     this.debugBalloon.classList.add("p-debug-view__balloon");
     this.baseGroup=new THREE.Group();
-    this.balloonMesh=new BalloonMesh();
+    this.balloonMesh=originalBalloonMesh.clone();
     // this.balloonMesh.visible=false;
     this.baseGroup.add(this.balloonMesh);
 
-    this.starMeshList=Array.from({length:STAR_EFFECT_QTY}).map(()=>new StarMesh());
+    this.starMeshList=Array.from({length:STAR_EFFECT_QTY}).map(()=>originalStarMesh.clone());
     for(let starMesh of this.starMeshList){
       // starMesh.visible=false;
       this.baseGroup.add(starMesh);

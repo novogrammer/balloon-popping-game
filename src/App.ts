@@ -18,8 +18,9 @@ import SceneStateTitle from "./SceneState/SceneStateTitle";
 import PlayerScoreInterface from "./PlayerScoreInterface";
 import { firebaseConfig } from "./firebase_constants";
 import ElementSizeObserver from "./ElementSizeObserver";
-// import BalloonMesh from "./BalloonMesh";
-// import StarMesh from "./StarMesh";
+import BalloonMesh from "./BalloonMesh";
+import FootMesh from "./FootMesh";
+import StarMesh from "./StarMesh";
 // import {ScrollTrigger} from "gsap/ScrollTrigger";
 // import {ScrollToPlugin} from "gsap/ScrollToPlugin";
 
@@ -47,6 +48,12 @@ interface ThreeObjects{
   scene: THREE.Scene;
 }
 
+interface OriginalMeshes{
+  starMesh:StarMesh;
+  footMesh:FootMesh;
+  balloonMesh:BalloonMesh;
+}
+
 export default class App implements SceneContextInterface{
   currentSceneState:SceneStateBase|null=null;
   appElement:HTMLDivElement;
@@ -57,6 +64,7 @@ export default class App implements SceneContextInterface{
   game3DViewElement:HTMLDivElement;
   game2DViewElement:HTMLDivElement;
 
+  originalMeshes:OriginalMeshes;
   threeObjects?:ThreeObjects;
 
   elementSizeObserver:ElementSizeObserver;
@@ -90,6 +98,12 @@ export default class App implements SceneContextInterface{
     this.elementSizeObserver = new ElementSizeObserver({
       elementForSize: this.game3DViewElement,
     });
+
+    this.originalMeshes={
+      starMesh:new StarMesh(),
+      footMesh:new FootMesh(),
+      balloonMesh:new BalloonMesh(),
+    };
     
     this.setupStats();
     this.setupFirebase();
@@ -413,6 +427,15 @@ export default class App implements SceneContextInterface{
   }
   getPlayerScoreList(): PlayerScoreInterface[] {
     return this.playerScoreList;
+  }
+  getOriginalStarMesh(): StarMesh {
+    return this.originalMeshes.starMesh;
+  }
+  getOriginalFootMesh(): FootMesh {
+    return this.originalMeshes.footMesh;
+  }
+  getOriginalBalloonMesh(): BalloonMesh {
+    return this.originalMeshes.balloonMesh;
   }
   onResize(){
     if (!this.threeObjects) {

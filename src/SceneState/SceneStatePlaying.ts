@@ -103,22 +103,26 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
     const game2DViewElement=this.sceneContext.getGame2DViewElement();
     game2DViewElement.appendChild(this.game2DSceneElement);
 
+    const originalFootMesh=this.sceneContext.getOriginalFootMesh();
+    const originalBalloonMesh=this.sceneContext.getOriginalBalloonMesh();
+    const originalStarMesh=this.sceneContext.getOriginalStarMesh();
+
     this.objectLocationList=[
       new ObjectLocation({
-        foot:new Foot("KeyJ"),
-        balloon:new Balloon(),
+        foot:new Foot("KeyJ",originalFootMesh),
+        balloon:new Balloon(originalBalloonMesh,originalStarMesh),
         debugObjectLocation:debugObjectLocationJ,
         addScoreListener:this,
       }),
       new ObjectLocation({
-        foot:new Foot("KeyK"),
-        balloon:new Balloon(),
+        foot:new Foot("KeyK",originalFootMesh),
+        balloon:new Balloon(originalBalloonMesh,originalStarMesh),
         debugObjectLocation:debugObjectLocationK,
         addScoreListener:this,
       }),
       new ObjectLocation({
-        foot:new Foot("KeyL"),
-        balloon:new Balloon(),
+        foot:new Foot("KeyL",originalFootMesh),
+        balloon:new Balloon(originalBalloonMesh,originalStarMesh),
         debugObjectLocation:debugObjectLocationL,
         addScoreListener:this,
       }),

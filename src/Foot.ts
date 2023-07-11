@@ -17,13 +17,13 @@ export default class Foot implements KeyEventListenerInterface{
   debugFoot:HTMLElement;
   footMesh:FootMesh;
   
-  constructor(targetCode:string){
+  constructor(targetCode:string,originalFootMesh:FootMesh){
     this.targetCode=targetCode;
     this.footState=FootState.Up;
     this.debugFoot=document.createElement("div");
     this.debugFoot.classList.add("p-debug-view__foot");
     this.debugFoot.classList.add("p-debug-view__foot--up");
-    this.footMesh=new FootMesh();
+    this.footMesh=originalFootMesh.clone();
     this.footMesh.position.y=FOOT_LIFT_Y;
   }
   destroy(){

@@ -1,4 +1,7 @@
+import BalloonMesh from "../BalloonMesh";
+import FootMesh from "../FootMesh";
 import PlayerScoreInterface from "../PlayerScoreInterface";
+import StarMesh from "../StarMesh";
 import SceneStateBase from "./SceneStateBase";
 
 interface Size{
@@ -14,4 +17,7 @@ export default interface SceneContextInterface{
   getViewSize():Size;
   submitPlayerScore(playerScore:PlayerScoreInterface):void;
   getPlayerScoreList():PlayerScoreInterface[];
+  getOriginalStarMesh():StarMesh;
+  getOriginalFootMesh():FootMesh;
+  getOriginalBalloonMesh():BalloonMesh;
 }
