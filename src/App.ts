@@ -18,8 +18,8 @@ import SceneStateTitle from "./SceneState/SceneStateTitle";
 import PlayerScoreInterface from "./PlayerScoreInterface";
 import { firebaseConfig } from "./firebase_constants";
 import ElementSizeObserver from "./ElementSizeObserver";
-import BalloonMesh from "./BalloonMesh";
-import StarMesh from "./StarMesh";
+// import BalloonMesh from "./BalloonMesh";
+// import StarMesh from "./StarMesh";
 // import {ScrollTrigger} from "gsap/ScrollTrigger";
 // import {ScrollToPlugin} from "gsap/ScrollToPlugin";
 
