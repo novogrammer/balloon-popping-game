@@ -1,3 +1,4 @@
+import * as THREE from "three";
 import Balloon from "./Balloon";
 import Foot from "./Foot";
 import AddScoreListenerInterface from "./AddScoreListenerInterface";
@@ -15,11 +16,13 @@ export default class ObjectLocation implements AddScoreListenerInterface,KeyEven
   balloon:Balloon;
   debugObjectLocation:HTMLElement;
   addScoreListener:AddScoreListenerInterface;
+  objectLocationGroup:THREE.Group;
   constructor({foot,balloon,debugObjectLocation,addScoreListener}:ObjectLocationParams){
     this.foot=foot;
     this.balloon=balloon;
     this.debugObjectLocation=debugObjectLocation;
     this.addScoreListener=addScoreListener;
+    this.objectLocationGroup=new THREE.Group();
     this.foot.setObjectLocation(this);
     this.balloon.setObjectLocation(this);
   }

@@ -1,5 +1,9 @@
+import {gsap} from "gsap";
+
+import FootMesh from "./FootMesh";
 import KeyEventListenerInterface from "./KeyEventListenerInterface";
 import ObjectLocation from "./ObjectLocation";
+import { FOOT_LIFT_Y, FOOT_MOVE_DURATION } from "./constants";
 
 enum FootState{
   Up="up",
@@ -11,6 +15,7 @@ export default class Foot implements KeyEventListenerInterface{
   targetCode:string;
   footState:FootState;
   debugFoot:HTMLElement;
+  footMesh:FootMesh;
   
   constructor(targetCode:string){
     this.targetCode=targetCode;
@@ -18,16 +23,20 @@ export default class Foot implements KeyEventListenerInterface{
     this.debugFoot=document.createElement("div");
     this.debugFoot.classList.add("p-debug-view__foot");
     this.debugFoot.classList.add("p-debug-view__foot--up");
+    this.footMesh=new FootMesh();
+    this.footMesh.position.y=FOOT_LIFT_Y;
   }
   destroy(){
   }
   setObjectLocation(objectLocation:ObjectLocation|null):void{
     if(this.objectLocation){
+      this.objectLocation.objectLocationGroup.remove(this.footMesh);
       this.objectLocation.debugObjectLocation.removeChild(this.debugFoot);
     }
     this.objectLocation=objectLocation;
     if(this.objectLocation){
       this.objectLocation.debugObjectLocation.appendChild(this.debugFoot);
+      this.objectLocation.objectLocationGroup.add(this.footMesh);
     }
     
   }
@@ -45,6 +54,13 @@ export default class Foot implements KeyEventListenerInterface{
     this.debugFoot.classList.remove("p-debug-view__foot--up");
     this.debugFoot.classList.add("p-debug-view__foot--down");
 
+    gsap.to(this.footMesh.position,{
+      y:0,
+      duration:FOOT_MOVE_DURATION,
+      ease:"bounce.out",
+    });
+    
+
     this.objectLocation.onStamp();
   }
   onCodeUp(code:string){
@@ -55,5 +71,10 @@ export default class Foot implements KeyEventListenerInterface{
     this.debugFoot.classList.remove("p-debug-view__foot--down");
     this.debugFoot.classList.add("p-debug-view__foot--up");
 
+    gsap.to(this.footMesh.position,{
+      y:FOOT_LIFT_Y,
+      duration:FOOT_MOVE_DURATION,
+      ease:"power2.out",
+    });
   }
 }

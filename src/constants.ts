@@ -39,4 +39,9 @@ export const RANK_TEXT_LIST=[
 
 export const INPUT_BLINK_CYCLE=0.25;
 
+export const FOOT_LIFT_Y=2;
+export const FOOT_MOVE_DURATION=0.2;
+
+export const GAME_HEIGHT=4;
+
 

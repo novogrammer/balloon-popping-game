@@ -18,6 +18,7 @@ import SceneStateTitle from "./SceneState/SceneStateTitle";
 import PlayerScoreInterface from "./PlayerScoreInterface";
 import { firebaseConfig } from "./firebase_constants";
 import ElementSizeObserver from "./ElementSizeObserver";
+import BalloonMesh from "./BalloonMesh";
 // import {ScrollTrigger} from "gsap/ScrollTrigger";
 // import {ScrollToPlugin} from "gsap/ScrollToPlugin";
 
@@ -187,13 +188,13 @@ export default class App implements SceneContextInterface{
       this.uiViewElement.appendChild(systemButtonListElement);
 
       const buttonToggleDebugElement=document.createElement("button");
-      buttonToggleDebugElement.textContent="toggle debug";
+      buttonToggleDebugElement.textContent="Toggle (D)ebug";
       buttonToggleDebugElement.classList.add("p-ui-view__system-button");
       buttonToggleDebugElement.classList.add("p-ui-view__system-button--toggle-debug");
       systemButtonListElement.appendChild(buttonToggleDebugElement);
 
       const buttonToggleUIElement=document.createElement("button");
-      buttonToggleUIElement.textContent="toggle ui";
+      buttonToggleUIElement.textContent="Toggle (U)I";
       buttonToggleUIElement.classList.add("p-ui-view__system-button");
       buttonToggleUIElement.classList.add("p-ui-view__system-button--toggle-debug");
       systemButtonListElement.appendChild(buttonToggleUIElement);
@@ -250,7 +251,7 @@ export default class App implements SceneContextInterface{
       const prefix="red_brick_03_";
       const diff=new THREE.TextureLoader().load(`${base}${prefix}diff_1k.jpg`);
       const nor=new THREE.TextureLoader().load(`${base}${prefix}nor_gl_1k.png`);
-      const rough=new THREE.TextureLoader().load(`${base}${prefix}rough_1k.png`);
+      const rough=new THREE.TextureLoader().load(`${base}${prefix}rough_1k.jpg`);
       const metal=new THREE.TextureLoader().load(`${base}${prefix}metal_1k.png`);
 
 
@@ -267,52 +268,12 @@ export default class App implements SceneContextInterface{
     })();
     scene.add(ground);
 
-    const balloonMaterialMesh=(()=>{
-      const geometry = new THREE.IcosahedronGeometry( 1, 5 );
-      const material = new THREE.MeshPhysicalMaterial({
-        color: 0xf02020,
-        roughness:0.2,
-        metalness:0,
-        reflectivity:0.5,
-        clearcoat:0.25,
-        clearcoatRoughness:0.2,
-      });
-      const mesh = new THREE.Mesh( geometry, material );
-      mesh.position.y=1;
-      mesh.castShadow=true;
-      mesh.receiveShadow=true;
-      mesh.name="BalloonMaterialMesh";
-      return mesh;
-    })();
+    const balloonMesh=new BalloonMesh();
+    balloonMesh.castShadow=true;
+    balloonMesh.receiveShadow=true;
+    balloonMesh.name="BalloonMesh";
 
-    scene.add( balloonMaterialMesh );
-
-
-    const footMaterialMesh=(()=>{
-      const geometry = new THREE.BoxGeometry( 1, 1, 2 );
-
-      const base="./textures/polyhaven/metal_plate_1k/";
-      const prefix="metal_plate_";
-      const diff=new THREE.TextureLoader().load(`${base}${prefix}diff_1k.jpg`);
-      const nor=new THREE.TextureLoader().load(`${base}${prefix}nor_gl_1k.png`);
-      const rough=new THREE.TextureLoader().load(`${base}${prefix}rough_1k.png`);
-      const metal=new THREE.TextureLoader().load(`${base}${prefix}metal_1k.png`);
-
-
-      const material = new THREE.MeshStandardMaterial({
-        map:diff,
-        normalMap:nor,
-        roughnessMap:rough,
-        metalnessMap:metal,
-      });
-      const mesh = new THREE.Mesh( geometry, material );
-      mesh.position.x=2;
-      mesh.position.y=2;
-      mesh.castShadow=true;
-      mesh.receiveShadow=true;
-      return mesh;
-    })();
-    scene.add(footMaterialMesh);
+    scene.add( balloonMesh );
 
 
     const renderer = new THREE.WebGLRenderer({
@@ -434,6 +395,9 @@ export default class App implements SceneContextInterface{
     }
     const {scene}=this.threeObjects;
     return scene;
+  }
+  getViewSize(){
+    return this.elementSizeObserver.getSize();
   }
   submitPlayerScore(playerScore:PlayerScoreInterface):void{
     if(!this.firebaseObjects){

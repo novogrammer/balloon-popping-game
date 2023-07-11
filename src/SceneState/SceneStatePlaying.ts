@@ -1,5 +1,5 @@
 import PlayingStateBase from "../PlayingState/PlayingStateBase";
-import { COUNTDOWN_DURATION, GAME_DURATION, IS_DEBUG, TIMEOUT_DURATION } from "../constants";
+import { COUNTDOWN_DURATION, GAME_DURATION, GAME_HEIGHT, IS_DEBUG, TIMEOUT_DURATION } from "../constants";
 import SceneContextInterface from "./SceneContextInterface";
 import SceneStateBase from "./SceneStateBase";
 import SceneStateResult from "./SceneStateResult";
@@ -124,12 +124,25 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
       }),
     ];
     this.setNextPlayingState(new PlayingStateCountdown(this));
+    const scene=this.sceneContext.getThreeScene();
+    const size=this.sceneContext.getViewSize();
+    for(let [index,objectLocation] of this.objectLocationList.entries()){
+      const x=(index-1)*size.width/size.height*GAME_HEIGHT*0.5;
+      objectLocation.objectLocationGroup.position.x=x;
+      scene.add(objectLocation.objectLocationGroup);
+    }
     
   }
   onEndSceneState(): void {
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onEndSceneState`);
     }
+
+    const scene=this.sceneContext.getThreeScene();
+    for(let objectLocation of this.objectLocationList){
+      scene.remove(objectLocation.objectLocationGroup);
+    }
+
     this.setNextPlayingState(null);
     const debugViewElement=this.sceneContext.getDebugViewElement();
     debugViewElement.removeChild(this.debugTitle);

@@ -2,10 +2,11 @@
 
 .p-ui-view{
   position:fixed;
-  left:0;
+  box-sizing: border-box;
+  right:0;
   bottom:0;
-  width:100%;
-  height:50%;
+  width:50%;
+  height:40vw;
   background-color:rgba(255,255,255,0.5);
   border-radius:$BORDER_RADIUS;
   padding:$BORDER_RADIUS;
@@ -14,8 +15,12 @@
   }
   &__foot-button-list{
     display:flex;
+    justify-content: space-between;
+    margin-bottom:2vw;
   }
   &__foot-button{
+    font-size:10vw;
+    width:15vw;
     &--j{
 
     }
@@ -27,9 +32,13 @@
     }
   }
   &__system-button-list{
-    display:block;
+    display:flex;
+    justify-content: space-between;
   }
+
   &__system-button{
+    font-size:3vw;
+    width:23vw;
     &--toggle-debug{
 
     }
