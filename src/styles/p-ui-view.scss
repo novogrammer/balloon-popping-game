@@ -37,12 +37,15 @@
   }
 
   &__system-button{
-    font-size:3vw;
-    width:23vw;
+    font-size:2vw;
+    width:15vw;
     &--toggle-debug{
 
     }
     &--toggle-ui{
+
+    }
+    &--toggle-fullscreen{
 
     }
   }

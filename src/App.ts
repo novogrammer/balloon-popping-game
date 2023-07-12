@@ -34,6 +34,7 @@ interface UIFootObjects{
 interface UISystemObjects{
   buttonToggleDebugElement:HTMLButtonElement;
   buttonToggleUIElement:HTMLButtonElement;
+  buttonToggleFullscreenElement:HTMLButtonElement;
 }
 
 interface FirebaseObjects{
@@ -152,6 +153,9 @@ export default class App implements SceneContextInterface{
       case "KeyU":
         this.toggleUI();
         break;
+      case "KeyF":
+        this.toggleFullscreen();
+        break;
     }
   }
   onKeyUp(event:KeyboardEvent){
@@ -207,20 +211,27 @@ export default class App implements SceneContextInterface{
       this.uiViewElement.appendChild(systemButtonListElement);
 
       const buttonToggleDebugElement=document.createElement("button");
-      buttonToggleDebugElement.textContent="Toggle (D)ebug";
+      buttonToggleDebugElement.innerHTML="Toggle<br>(D)ebug";
       buttonToggleDebugElement.classList.add("p-ui-view__system-button");
       buttonToggleDebugElement.classList.add("p-ui-view__system-button--toggle-debug");
       systemButtonListElement.appendChild(buttonToggleDebugElement);
 
       const buttonToggleUIElement=document.createElement("button");
-      buttonToggleUIElement.textContent="Toggle (U)I";
+      buttonToggleUIElement.innerHTML="Toggle<br>(U)I";
       buttonToggleUIElement.classList.add("p-ui-view__system-button");
       buttonToggleUIElement.classList.add("p-ui-view__system-button--toggle-debug");
       systemButtonListElement.appendChild(buttonToggleUIElement);
 
+      const buttonToggleFullscreenElement=document.createElement("button");
+      buttonToggleFullscreenElement.innerHTML="Toggle<br>(F)ullscreen";
+      buttonToggleFullscreenElement.classList.add("p-ui-view__system-button");
+      buttonToggleFullscreenElement.classList.add("p-ui-view__system-button--toggle-fullscreen");
+      systemButtonListElement.appendChild(buttonToggleFullscreenElement);
+
       this.uiSystemObjects={
         buttonToggleDebugElement,
         buttonToggleUIElement,
+        buttonToggleFullscreenElement,
       };
     }
 
@@ -353,12 +364,16 @@ export default class App implements SceneContextInterface{
       const {
         buttonToggleDebugElement,
         buttonToggleUIElement,
+        buttonToggleFullscreenElement,
       }=uiSystemObjects;
       buttonToggleDebugElement.addEventListener("click",()=>{
         this.toggleDebug();
       });
       buttonToggleUIElement.addEventListener("click",()=>{
         this.toggleUI();
+      });
+      buttonToggleFullscreenElement.addEventListener("click",()=>{
+        this.toggleFullscreen();
       });
 
     }
@@ -471,6 +486,16 @@ export default class App implements SceneContextInterface{
   }
   toggleUI(){
     this.uiViewElement.classList.toggle("p-ui-view--hidden");
+  }
+  toggleFullscreen(){
+    if (!document.fullscreenElement) {
+      this.appElement.requestFullscreen().catch((err) => {
+        console.error(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+
   }
 
 }
