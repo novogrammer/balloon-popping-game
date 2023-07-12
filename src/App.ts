@@ -124,6 +124,8 @@ export default class App implements SceneContextInterface{
       const mesh = await new Promise<THREE.Mesh>((resolve,reject)=>{
         gltf.scene.traverse((object3D)=>{
           if(object3D instanceof THREE.Mesh){
+            object3D.receiveShadow=true;
+            object3D.castShadow=true;
             resolve(object3D);
           }
         });
