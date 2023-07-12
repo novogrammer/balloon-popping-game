@@ -19,7 +19,7 @@ import SceneStateTitle from "./SceneState/SceneStateTitle";
 import PlayerScoreInterface from "./PlayerScoreInterface";
 import { firebaseConfig } from "./firebase_constants";
 import ElementSizeObserver from "./ElementSizeObserver";
-import BalloonMesh from "./BalloonMesh";
+// import BalloonMesh from "./BalloonMesh";
 // import FootMesh from "./FootMesh";
 import StarMesh from "./StarMesh";
 // import {ScrollTrigger} from "gsap/ScrollTrigger";
@@ -118,12 +118,10 @@ export default class App implements SceneContextInterface{
     })
   }
   async loadMeshAsync():Promise<void>{
-    let weightMesh:THREE.Mesh;
-    {
+    const loadGltfMeshAsync = async (path:string):Promise<THREE.Mesh> =>{
       const gltfLoader=new GLTFLoader();
-      const base="./models/";
-      const gltf= await gltfLoader.loadAsync(`${base}weight.glb`);
-      weightMesh = await new Promise((resolve,reject)=>{
+      const gltf= await gltfLoader.loadAsync(path);
+      const mesh = await new Promise<THREE.Mesh>((resolve,reject)=>{
         gltf.scene.traverse((object3D)=>{
           if(object3D instanceof THREE.Mesh){
             resolve(object3D);
@@ -132,13 +130,16 @@ export default class App implements SceneContextInterface{
         // すでにresolveが呼ばれた場合は無視される
         reject(new Error("mesh not found"));
       });
-  
+      return mesh;
     }
+    const base="./models/";
+    const weightMesh = await loadGltfMeshAsync(`${base}weight.glb`)
+    const balloonMesh = await loadGltfMeshAsync(`${base}balloon.glb`)
 
     this.originalMeshes={
       starMesh:new StarMesh(),
       footMesh:weightMesh,
-      balloonMesh:new BalloonMesh(),
+      balloonMesh:balloonMesh,
     };
 
   }
