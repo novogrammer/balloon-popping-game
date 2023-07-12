@@ -272,7 +272,7 @@ export default class App implements SceneContextInterface{
     const camera = new THREE.PerspectiveCamera(FOVY, size.width / size.height, 0.1, 1000);
     camera.name="MainCamera";
     camera.position.y=2;
-    camera.position.z=5;
+    camera.position.z=10;
     scene.add(camera);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
@@ -302,10 +302,10 @@ export default class App implements SceneContextInterface{
     });
 
     const ground=(()=>{
-      const geometry = new THREE.BoxGeometry( 10, 1, 10 );
+      const geometry = new THREE.BoxGeometry( 10, 0.01, 10 );
 
-      const base="./textures/polyhaven/red_brick_03_1k/";
-      const prefix="red_brick_03_";
+      const base="./textures/polyhaven/metal_plate_1k/";
+      const prefix="metal_plate_";
       const diff=new THREE.TextureLoader().load(`${base}${prefix}diff_1k.jpg`);
       const nor=new THREE.TextureLoader().load(`${base}${prefix}nor_gl_1k.png`);
       const rough=new THREE.TextureLoader().load(`${base}${prefix}rough_1k.jpg`);
@@ -318,7 +318,6 @@ export default class App implements SceneContextInterface{
         roughnessMap:rough,
         metalnessMap:metal,
       });
-      geometry.translate(0,-0.5,0);
       const mesh = new THREE.Mesh( geometry, material );
       mesh.receiveShadow=true;
       return mesh;
