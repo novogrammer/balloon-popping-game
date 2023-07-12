@@ -1,6 +1,6 @@
 import InputCharactorInterface from "./InputCharactorInterface";
 
-export const IS_DEBUG=true;
+export const IS_DEBUG=false;
 
 export const FOVY=60;
 

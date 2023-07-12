@@ -73,8 +73,9 @@ export default class App implements SceneContextInterface{
   playerScoreList:PlayerScoreInterface[]=[];
 
   firebaseObjects?:FirebaseObjects;
+
+  isDebug:boolean;
   constructor(){
-    console.log(THREE);
     this.appElement=document.querySelector<HTMLDivElement>("#app")!;
     if(!this.appElement){
       throw new Error("appElement is null");
@@ -104,8 +105,12 @@ export default class App implements SceneContextInterface{
       footMesh:new FootMesh(),
       balloonMesh:new BalloonMesh(),
     };
+    this.isDebug=true;
     
     this.setupStats();
+    if(!IS_DEBUG){
+      this.toggleDebug();
+    }
     this.setupFirebase();
     this.setupUI();
     this.setupThree();
@@ -142,10 +147,10 @@ export default class App implements SceneContextInterface{
     }
     switch(event.code){
       case "KeyD":
-        this.debugViewElement.classList.toggle("p-debug-view--hidden");
+        this.toggleDebug();
         break;
       case "KeyU":
-        this.uiViewElement.classList.toggle("p-ui-view--hidden");
+        this.toggleUI();
         break;
     }
   }
@@ -160,7 +165,6 @@ export default class App implements SceneContextInterface{
   }
   setupStats(){
     this.stats = new Stats();
-    this.stats.dom.style.display = IS_DEBUG ? "block" : "none";
     this.stats.dom.style.left="auto";
     this.stats.dom.style.right="0px";
     document.body.appendChild(this.stats.dom);
@@ -351,10 +355,10 @@ export default class App implements SceneContextInterface{
         buttonToggleUIElement,
       }=uiSystemObjects;
       buttonToggleDebugElement.addEventListener("click",()=>{
-        this.debugViewElement.classList.toggle("p-debug-view--hidden");
+        this.toggleDebug();
       });
       buttonToggleUIElement.addEventListener("click",()=>{
-        this.uiViewElement.classList.toggle("p-ui-view--hidden");
+        this.toggleUI();
       });
 
     }
@@ -450,6 +454,23 @@ export default class App implements SceneContextInterface{
     camera.aspect = size.width / size.height;
     camera.updateProjectionMatrix();
 
+  }
+  toggleDebug(){
+    if(!this.stats){
+      throw new Error("this.stats is null");
+    }
+    this.isDebug=!this.isDebug;
+    if(this.isDebug){
+      this.debugViewElement.classList.remove("p-debug-view--hidden");
+      this.stats.dom.style.display = "block";
+    }else{
+      this.debugViewElement.classList.add("p-debug-view--hidden");
+      this.stats.dom.style.display = "none";
+    }
+    
+  }
+  toggleUI(){
+    this.uiViewElement.classList.toggle("p-ui-view--hidden");
   }
 
 }
