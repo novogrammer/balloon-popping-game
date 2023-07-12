@@ -1,11 +1,9 @@
 import * as THREE from "three";
 import {gsap} from "gsap";
-import BalloonMesh from "./BalloonMesh";
 import BalloonContextInterface from "./BalloonState/BalloonContextInterface";
 import BalloonStateBase from "./BalloonState/BalloonStateBase";
 import BalloonStatePreparing from "./BalloonState/BalloonStatePreparing";
 import ObjectLocation from "./ObjectLocation";
-import StarMesh from "./StarMesh";
 import { AWAY_DURATION, POPPING_DURATION, READY_DURATION, STAR_EFFECT_MOVE_LENGTH, STAR_EFFECT_QTY } from "./constants";
 
 export default class Balloon implements BalloonContextInterface{
@@ -13,9 +11,9 @@ export default class Balloon implements BalloonContextInterface{
   currentBalloonState:BalloonStateBase|null=null;
   debugBalloon:HTMLElement;
   baseGroup:THREE.Group;
-  balloonMesh:BalloonMesh;
-  starMeshList:StarMesh[];
-  constructor(originalBalloonMesh:BalloonMesh,originalStarMesh:StarMesh){
+  balloonMesh:THREE.Mesh;
+  starMeshList:THREE.Mesh[];
+  constructor(originalBalloonMesh:THREE.Mesh,originalStarMesh:THREE.Mesh){
     this.debugBalloon=document.createElement("div");
     this.debugBalloon.classList.add("p-debug-view__balloon");
     this.baseGroup=new THREE.Group();

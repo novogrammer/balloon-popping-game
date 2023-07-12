@@ -2,6 +2,7 @@
 import * as THREE from "three";
 import { GroundProjectedSkybox } from 'three/addons/objects/GroundProjectedSkybox.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 import Stats from "stats.js";
 
@@ -19,7 +20,7 @@ import PlayerScoreInterface from "./PlayerScoreInterface";
 import { firebaseConfig } from "./firebase_constants";
 import ElementSizeObserver from "./ElementSizeObserver";
 import BalloonMesh from "./BalloonMesh";
-import FootMesh from "./FootMesh";
+// import FootMesh from "./FootMesh";
 import StarMesh from "./StarMesh";
 // import {ScrollTrigger} from "gsap/ScrollTrigger";
 // import {ScrollToPlugin} from "gsap/ScrollToPlugin";
@@ -50,9 +51,9 @@ interface ThreeObjects{
 }
 
 interface OriginalMeshes{
-  starMesh:StarMesh;
-  footMesh:FootMesh;
-  balloonMesh:BalloonMesh;
+  starMesh:THREE.Mesh;
+  footMesh:THREE.Mesh;
+  balloonMesh:THREE.Mesh;
 }
 
 export default class App implements SceneContextInterface{
@@ -65,7 +66,7 @@ export default class App implements SceneContextInterface{
   game3DViewElement:HTMLDivElement;
   game2DViewElement:HTMLDivElement;
 
-  originalMeshes:OriginalMeshes;
+  originalMeshes?:OriginalMeshes;
   threeObjects?:ThreeObjects;
 
   elementSizeObserver:ElementSizeObserver;
@@ -101,11 +102,6 @@ export default class App implements SceneContextInterface{
       elementForSize: this.game3DViewElement,
     });
 
-    this.originalMeshes={
-      starMesh:new StarMesh(),
-      footMesh:new FootMesh(),
-      balloonMesh:new BalloonMesh(),
-    };
     this.isDebug=true;
     
     this.setupStats();
@@ -114,9 +110,37 @@ export default class App implements SceneContextInterface{
     }
     this.setupFirebase();
     this.setupUI();
-    this.setupThree();
-    this.setupEvents();
-    this.setNextSceneState(new SceneStateTitle(this))
+
+    this.loadMeshAsync().then(()=>{
+      this.setupThree();
+      this.setupEvents();
+      this.setNextSceneState(new SceneStateTitle(this))
+    })
+  }
+  async loadMeshAsync():Promise<void>{
+    let weightMesh:THREE.Mesh;
+    {
+      const gltfLoader=new GLTFLoader();
+      const base="./models/";
+      const gltf= await gltfLoader.loadAsync(`${base}weight.glb`);
+      weightMesh = await new Promise((resolve,reject)=>{
+        gltf.scene.traverse((object3D)=>{
+          if(object3D instanceof THREE.Mesh){
+            resolve(object3D);
+          }
+        });
+        // すでにresolveが呼ばれた場合は無視される
+        reject(new Error("mesh not found"));
+      });
+  
+    }
+
+    this.originalMeshes={
+      starMesh:new StarMesh(),
+      footMesh:weightMesh,
+      balloonMesh:new BalloonMesh(),
+    };
+
   }
   setupFirebase(){
     const app = initializeApp(firebaseConfig);
@@ -447,13 +471,22 @@ export default class App implements SceneContextInterface{
   getPlayerScoreList(): PlayerScoreInterface[] {
     return this.playerScoreList;
   }
-  getOriginalStarMesh(): StarMesh {
+  getOriginalStarMesh(): THREE.Mesh {
+    if(!this.originalMeshes){
+      throw new Error("this.originalMeshes is null");
+    }
     return this.originalMeshes.starMesh;
   }
-  getOriginalFootMesh(): FootMesh {
+  getOriginalFootMesh(): THREE.Mesh {
+    if(!this.originalMeshes){
+      throw new Error("this.originalMeshes is null");
+    }
     return this.originalMeshes.footMesh;
   }
-  getOriginalBalloonMesh(): BalloonMesh {
+  getOriginalBalloonMesh(): THREE.Mesh {
+    if(!this.originalMeshes){
+      throw new Error("this.originalMeshes is null");
+    }
     return this.originalMeshes.balloonMesh;
   }
   onResize(){
