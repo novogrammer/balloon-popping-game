@@ -22,6 +22,7 @@ import ElementSizeObserver from "./ElementSizeObserver";
 // import BalloonMesh from "./BalloonMesh";
 // import FootMesh from "./FootMesh";
 import StarMesh from "./StarMesh";
+import FloorMesh from "./FloorMesh";
 // import {ScrollTrigger} from "gsap/ScrollTrigger";
 // import {ScrollToPlugin} from "gsap/ScrollToPlugin";
 
@@ -301,28 +302,9 @@ export default class App implements SceneContextInterface{
       scene.environment=envMap;
     });
 
-    const ground=(()=>{
-      const geometry = new THREE.BoxGeometry( 10, 0.01, 10 );
-
-      const base="./textures/polyhaven/metal_plate_1k/";
-      const prefix="metal_plate_";
-      const diff=new THREE.TextureLoader().load(`${base}${prefix}diff_1k.jpg`);
-      const nor=new THREE.TextureLoader().load(`${base}${prefix}nor_gl_1k.png`);
-      const rough=new THREE.TextureLoader().load(`${base}${prefix}rough_1k.jpg`);
-      const metal=new THREE.TextureLoader().load(`${base}${prefix}metal_1k.png`);
-
-
-      const material = new THREE.MeshStandardMaterial({
-        map:diff,
-        normalMap:nor,
-        roughnessMap:rough,
-        metalnessMap:metal,
-      });
-      const mesh = new THREE.Mesh( geometry, material );
-      mesh.receiveShadow=true;
-      return mesh;
-    })();
-    scene.add(ground);
+    const floorMesh=new FloorMesh();
+    floorMesh.receiveShadow=true;
+    scene.add(floorMesh);
 
     // const balloonMesh=new BalloonMesh();
     // balloonMesh.castShadow=true;
