@@ -23,6 +23,7 @@ import ElementSizeObserver from "./ElementSizeObserver";
 // import FootMesh from "./FootMesh";
 import StarMesh from "./StarMesh";
 import FloorMesh from "./FloorMesh";
+import TitleAnimationGroup from "./TitleAnimationGroup";
 // import {ScrollTrigger} from "gsap/ScrollTrigger";
 // import {ScrollToPlugin} from "gsap/ScrollToPlugin";
 
@@ -49,6 +50,7 @@ interface ThreeObjects{
   renderer: THREE.WebGLRenderer;
   camera: THREE.PerspectiveCamera;
   scene: THREE.Scene;
+  titleAnimationGroup: TitleAnimationGroup;
 }
 
 interface OriginalMeshes{
@@ -306,6 +308,9 @@ export default class App implements SceneContextInterface{
     floorMesh.receiveShadow=true;
     scene.add(floorMesh);
 
+    const titleAnimationGroup=new TitleAnimationGroup(this.getOriginalBalloonMesh());
+    scene.add(titleAnimationGroup);
+
     // const balloonMesh=new BalloonMesh();
     // balloonMesh.castShadow=true;
     // balloonMesh.receiveShadow=true;
@@ -329,6 +334,7 @@ export default class App implements SceneContextInterface{
       renderer,
       camera,
       scene,
+      titleAnimationGroup,
     }
 
   }
@@ -413,7 +419,8 @@ export default class App implements SceneContextInterface{
     if (!this.threeObjects) {
       throw new Error("this.threeObjects is null");
     }
-    const {renderer,scene,camera}=this.threeObjects;
+    const {renderer,scene,camera,titleAnimationGroup}=this.threeObjects;
+    titleAnimationGroup.update(dt);
 
     renderer.render(scene, camera);
 
@@ -514,6 +521,22 @@ export default class App implements SceneContextInterface{
       throw new Error("this.originalMeshes is null");
     }
     return this.originalMeshes.balloonMesh;
+  }
+  startTitleAnimation():void{
+    if(!this.threeObjects){
+      throw new Error("this.threeObjects is null");
+    }
+    const {titleAnimationGroup}=this.threeObjects;
+    titleAnimationGroup.visible=true;
+    
+  }
+  stopTitleAnimation():void{
+    if(!this.threeObjects){
+      throw new Error("this.threeObjects is null");
+    }
+    const {titleAnimationGroup}=this.threeObjects;
+    titleAnimationGroup.visible=false;
+    
   }
   //#endregion
 

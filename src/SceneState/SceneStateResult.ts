@@ -107,6 +107,7 @@ export default class SceneStateResult extends SceneStateBase{
 
     const game2DViewElement=this.sceneContext.getGame2DViewElement();
     game2DViewElement.appendChild(this.game2DSceneElement);
+    this.sceneContext.startTitleAnimation();
     
   }
   onEndSceneState(): void {
@@ -121,6 +122,7 @@ export default class SceneStateResult extends SceneStateBase{
 
     const game2DViewElement=this.sceneContext.getGame2DViewElement();
     game2DViewElement.removeChild(this.game2DSceneElement);
+    this.sceneContext.stopTitleAnimation();
 
     this.sceneContext.submitPlayerScore({
       name:this.name,
