@@ -8,11 +8,11 @@ import Stats from "stats.js";
 
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { Analytics, getAnalytics } from "firebase/analytics";
-import {Firestore, addDoc, collection, getFirestore, onSnapshot} from "firebase/firestore";
+import {Firestore, addDoc, collection, getFirestore, limit, onSnapshot, orderBy, query} from "firebase/firestore";
 
 
 // import {gsap} from "gsap";
-import { FOVY, IS_DEBUG, MAIN_CAMERA_GAME_LOOKAT, MAIN_CAMERA_GAME_POSITION, MAIN_CAMERA_MOVE_DURATION, MAIN_CAMERA_MOVE_LIST } from "./constants";
+import { FOVY, IS_DEBUG, MAIN_CAMERA_GAME_LOOKAT, MAIN_CAMERA_GAME_POSITION, MAIN_CAMERA_MOVE_DURATION, MAIN_CAMERA_MOVE_LIST, RESULT_PLAYER_SCORE_LIST_QTY } from "./constants";
 import SceneContextInterface from "./SceneState/SceneContextInterface";
 import SceneStateBase from "./SceneState/SceneStateBase";
 import SceneStateTitle from "./SceneState/SceneStateTitle";
@@ -154,14 +154,21 @@ export default class App implements SceneContextInterface{
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const firestore = getFirestore(app);
-    onSnapshot(collection(firestore,"playerScores"),(querySnapshot)=>{
-      this.playerScoreList=[];
-      querySnapshot.forEach((doc) => {
-        const data=doc.data() as PlayerScoreInterface;
-        // console.log(data);
-        this.playerScoreList.push(data);
-      });
-    });
+    onSnapshot(
+      query(
+        collection(firestore,"playerScores"),
+        orderBy("score","desc"),
+        limit(RESULT_PLAYER_SCORE_LIST_QTY)
+      ),
+      (querySnapshot)=>{
+        this.playerScoreList=[];
+        querySnapshot.forEach((doc) => {
+          const data=doc.data() as PlayerScoreInterface;
+          // console.log(data);
+          this.playerScoreList.push(data);
+        });
+        }
+    );
     this.firebaseObjects={
       app,
       analytics,

@@ -1,6 +1,6 @@
 import InputCharactorInterface from "../InputCharactorInterface";
 import PlayerScoreInterface from "../PlayerScoreInterface";
-import { INPUT_BLINK_CYCLE, IS_DEBUG, NAME_INPUT_CHARACTOR_LIST, NAME_LENGTH, RANK_TEXT_LIST, RESULT_AFTER_DURATION, RESULT_PLAYER_SCORE_LIST_QTY } from "../constants";
+import { INPUT_BLINK_CYCLE, IS_DEBUG, NAME_INPUT_CHARACTOR_LIST, NAME_LENGTH, RANK_TEXT_LIST, RESULT_AFTER_DURATION } from "../constants";
 import SceneContextInterface from "./SceneContextInterface";
 import SceneStateBase from "./SceneStateBase";
 import SceneStateTitle from "./SceneStateTitle";
@@ -68,8 +68,7 @@ export default class SceneStateResult extends SceneStateBase{
       console.log(`${this.constructor.name}.onBeginSceneState`);
     }
 
-    this.playerScoreList=this.sceneContext.getPlayerScoreList().concat().sort((a,b)=>b.score - a.score).filter((_playerScore,index)=>index<RESULT_PLAYER_SCORE_LIST_QTY);
-
+    this.playerScoreList=this.sceneContext.getPlayerScoreList();
     {
       const playerScoreListElement=this.game2DSceneElement.querySelector(".p-game2d-scene-result__player-score-list");
       if(!playerScoreListElement){
