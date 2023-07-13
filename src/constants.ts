@@ -13,6 +13,7 @@ export const READY_DURATION=1;
 export const POPPING_DURATION=0.5;
 export const AWAY_DURATION=1;
 export const RESULT_PLAYER_SCORE_LIST_QTY=10;
+export const RESULT_AFTER_DURATION=1;
 
 export const NAME_LENGTH=3;
 export const NAME_INPUT_CHARACTOR_LIST:InputCharactorInterface[]=

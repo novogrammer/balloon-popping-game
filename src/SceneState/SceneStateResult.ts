@@ -1,9 +1,15 @@
 import InputCharactorInterface from "../InputCharactorInterface";
 import PlayerScoreInterface from "../PlayerScoreInterface";
-import { INPUT_BLINK_CYCLE, IS_DEBUG, NAME_INPUT_CHARACTOR_LIST, NAME_LENGTH, RANK_TEXT_LIST, RESULT_PLAYER_SCORE_LIST_QTY } from "../constants";
+import { INPUT_BLINK_CYCLE, IS_DEBUG, NAME_INPUT_CHARACTOR_LIST, NAME_LENGTH, RANK_TEXT_LIST, RESULT_AFTER_DURATION, RESULT_PLAYER_SCORE_LIST_QTY } from "../constants";
 import SceneContextInterface from "./SceneContextInterface";
 import SceneStateBase from "./SceneStateBase";
 import SceneStateTitle from "./SceneStateTitle";
+
+enum ResultState{
+  Input="input",
+  After="after",
+}
+
 
 export default class SceneStateResult extends SceneStateBase{
   name:string;
@@ -15,6 +21,8 @@ export default class SceneStateResult extends SceneStateBase{
   debugName:HTMLDivElement;
   debugPlayerScoreList:HTMLDivElement;
   charactorInputIndex:number;
+  resultState:ResultState;
+  afterTime:number;
   constructor(sceneContext:SceneContextInterface,score:number){
     super(sceneContext);
     this.name="";
@@ -31,6 +39,8 @@ export default class SceneStateResult extends SceneStateBase{
     this.debugName.classList.add("p-debug-view__name");
     this.debugPlayerScoreList=document.createElement("div");
     this.debugPlayerScoreList.classList.add("p-debug-view__player-score-list");
+    this.resultState=ResultState.Input;
+    this.afterTime=RESULT_AFTER_DURATION;
 
     this.setupGame2DScene();
   }
@@ -126,38 +136,62 @@ export default class SceneStateResult extends SceneStateBase{
     this.debugScore.textContent=`score: ${this.score}`;
     this.debugPlayerScoreList.innerHTML=`playerScoreList:<br>`+this.playerScoreList.map((playerScore)=>`${playerScore.name}:${playerScore.score}`).join("<br>");
 
-    {
-      const nameElement=document.querySelector(".p-game2d-scene-result__name");
-      if(!nameElement){
-        throw new Error("nameElement is null");
-      }
-      nameElement.textContent=`NAME: ${this.name}${inputCharactor}`;
+    const nameElement=document.querySelector(".p-game2d-scene-result__name");
+    if(!nameElement){
+      throw new Error("nameElement is null");
+    }
+    switch(this.resultState){
+      case ResultState.Input:
+        {
+          nameElement.textContent=`NAME: ${this.name}${inputCharactor}`;
+        }
+        break;
+      case ResultState.After:
+        {
+          nameElement.textContent=`NAME: ${this.name}`;
+          this.afterTime-=dt;
+          if(this.afterTime<0){
+            const nextSceneState=new SceneStateTitle(this.sceneContext);
+            this.sceneContext.setNextSceneState(nextSceneState);
+          }
+        }
+        break;
     }
 
+
     this.timeForAnimation+=dt;
+    
   }
   //#region KeyEventListenerInterface
   onCodeDown(code:string): void {
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onCodeDown`,code);
     }
-    switch(code){
-      case "KeyJ":
-        this.moveCharactorInputIndex(-1);
-        break;
-      case "KeyK":
+    switch(this.resultState){
+      case ResultState.Input:
         {
-          const nameInputCharactor=this.getCurrentInputCharactor();
-          this.name+=nameInputCharactor.charactor;
-          if(NAME_LENGTH<=this.name.length){
-            const nextSceneState=new SceneStateTitle(this.sceneContext);
-            this.sceneContext.setNextSceneState(nextSceneState);
+          switch(code){
+            case "KeyJ":
+              this.moveCharactorInputIndex(-1);
+              break;
+            case "KeyK":
+              {
+                const nameInputCharactor=this.getCurrentInputCharactor();
+                this.name+=nameInputCharactor.charactor;
+                if(NAME_LENGTH<=this.name.length){
+                  this.resultState=ResultState.After;
+                }
+                
+              }
+              break;
+            case "KeyL":
+              this.moveCharactorInputIndex(1);
+              break;
           }
-          
         }
         break;
-      case "KeyL":
-        this.moveCharactorInputIndex(1);
+      case ResultState.After:
+        // DO NOTHING
         break;
     }
   }
