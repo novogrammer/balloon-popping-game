@@ -1,6 +1,11 @@
 @startuml クラス図
 title クラス図
 
+interface PlayerScoreInterface{
+  name:string
+  score:number
+}
+
 interface AddScoreListenerInterface{
   addScore(score:number):void
 }
@@ -34,6 +39,10 @@ interface BalloonContextInterface extends AddScoreListenerInterface{
   setNextBalloonState(nextBalloonState?:BalloonStateBase):void
   addDebugModifier(modifier:string):void
   removeDebugModifier(modifier:string):void
+  startPreparingAnimation():void
+  startReadyAnimation():void
+  startAwayAnimation():void
+  startPoppingAnimation():void
 }
 
 
@@ -41,34 +50,41 @@ interface BalloonContextInterface extends AddScoreListenerInterface{
 class ObjectLocation implements AddScoreListenerInterface,KeyEventListenerInterface{
   foot:Foot
   balloon:Balloon
+  debugObjectLocation:HTMLElement
   addScoreListener:AddScoreListenerInterface
-  constructor(foot:Foot,balloon:Balloon)
+  objectLocationGroup:THREE.Group
+  constructor({foot,balloon,debugObjectLocation,addScoreListener}:ObjectLocationParams)
   destroy():void
-  onCodeDown(code:string): void
-  onCodeUp(code:string): void
   onStamp():void
   update(dt:number:number):void
 }
 
 class Foot implements KeyEventListenerInterface{
-  objectLocation:ObjectLocation
+  objectLocation:ObjectLocation|null
+  targetCode:string
+  footState:FootState
+  debugFoot:HTMLElement
+  footMesh:THREE.Mesh
+  constructor(targetCode:string,originalFootMesh:THREE.Mesh)
   destroy():void
-  setObjectLocation(objectLocation?:ObjectLocation):void
-  update(dt:number:number):void
-  onCodeDown(code:string):void
-  onCodeUp(code:string):void
+  setObjectLocation(objectLocation:ObjectLocation|null):void
+  update(dt:number):void
 }
 
 
 class Balloon implements BalloonContextInterface{
   objectLocation:ObjectLocation
-  balloonState:BalloonStateBase
+  currentBalloonState:BalloonStateBase|null
+  debugBalloon:HTMLElement
+  baseGroup:THREE.Group
+  balloonMesh:THREE.Mesh
+  starMeshList:THREE.Mesh[]
 
+  constructor(originalBalloonMesh:THREE.Mesh,originalStarMesh:THREE.Mesh)
   destroy():void
-  setObjectLocation(objectLocation?:ObjectLocation):void
-  addDebugModifier(modifier:string):void
-  removeDebugModifier(modifier:string):void
-  update(dt:number:number):void
+  setObjectLocation(objectLocation:ObjectLocation|null):void
+  update(dt:number):void
+  onStamp():void
 }
 
 abstract class PlayingStateBase{
@@ -78,6 +94,7 @@ abstract class PlayingStateBase{
   abstract onBeginPlayingState():void
   abstract onEndPlayingState():void
   abstract update(dt:number):void
+  abstract isInAction():boolean
 }
 
 class PlayingStateCountdown extends PlayingStateBase{
@@ -103,13 +120,14 @@ interface PlayingContextInterface{
 
 abstract class SceneStateBase extends KeyEventListenerInterface{
   sceneContext:SceneContextInterface
+  game2DSceneElement:HTMLDivElement
 
   constructor(sceneContext:SceneContextInterface)
-  abstract onCodeDown(code:string):void
-  abstract onCodeUp(code:string):void
   abstract onBeginSceneState():void
   abstract onEndSceneState():void
   abstract update(dt:number):void
+  abstract onCodeDown(code:string):void
+  abstract onCodeUp(code:string):void
 }
 
 class SceneStateTitle extends SceneStateBase{
@@ -132,19 +150,54 @@ class SceneStateResult extends SceneStateBase{
 
 interface SceneContextInterface{
   --
-  setNextSceneState(nextSeneState:SceneStateBase):void
+  setNextSceneState(nextSceneState:SceneStateBase|null):void
+  getDebugViewElement():HTMLDivElement
+  getGame2DViewElement():HTMLDivElement
+  getThreeScene():THREE.Scene
+  getViewSize():Size
   submitPlayerScore(playerScore:PlayerScoreInterface):void
   getPlayerScoreList():PlayerScoreInterface[]
+  getOriginalStarMesh():THREE.Mesh
+  getOriginalFootMesh():THREE.Mesh
+  getOriginalBalloonMesh():THREE.Mesh
 }
 
 class App implements SceneContextInterface{
   dataStore:DataStore
   --
+  loadMeshAsync():Promise<void>
+  setupFirebase():void
   onKeyDown(event:KeyboardEvent):void
   onKeyUp(event:KeyboardEvent):void
-  update(dt:number):void;
+  setupStats():void
+  setupUI():void
+  setupThree():void
+  setupEvents():void
+  update(dt:number):void
+  onResize():void
+  toggleDebug():void
+  toggleUI():void
+  toggleFullscreen():void
 }
 
+interface ElementSizeObserverParams {
+  elementForSize: HTMLElement
+  onResize?: SimpleCallback
+}
+interface Size {
+  width: number
+  height: number
+}
+
+class ElementSizeObserver{
+  previousSize: Size | null
+  elementForSize: HTMLElement
+  onResize: SimpleCallback | undefined
+  constructor({ elementForSize, onResize }: ElementSizeObserverParams)
+  getSize(): Size
+  update():void
+
+}
 
 SceneStateBase o-up- SceneContextInterface
 App o-right- SceneStateBase

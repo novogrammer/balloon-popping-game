@@ -30,7 +30,7 @@ export default class ElementSizeObserver {
     }
   }
 
-  update() {
+  update():void {
     const size = this.getSize();
     if ((!this.previousSize) || size.width !== this.previousSize.width || size.height !== this.previousSize.height) {
       if (this.onResize) {

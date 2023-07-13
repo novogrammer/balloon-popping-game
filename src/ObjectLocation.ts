@@ -26,7 +26,7 @@ export default class ObjectLocation implements AddScoreListenerInterface,KeyEven
     this.foot.setObjectLocation(this);
     this.balloon.setObjectLocation(this);
   }
-  destroy(){
+  destroy():void{
     this.foot.setObjectLocation(null);
     this.balloon.setObjectLocation(null);
     this.foot.destroy();

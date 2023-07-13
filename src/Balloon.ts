@@ -29,10 +29,10 @@ export default class Balloon implements BalloonContextInterface{
 
     this.setNextBalloonState(new BalloonStatePreparing(this));
   }
-  destroy(){
+  destroy():void{
     this.setNextBalloonState(null);
   }
-  setObjectLocation(objectLocation:ObjectLocation|null){
+  setObjectLocation(objectLocation:ObjectLocation|null):void{
     if(this.objectLocation){
       this.objectLocation.objectLocationGroup.remove(this.baseGroup);
       this.objectLocation.debugObjectLocation.removeChild(this.debugBalloon);
@@ -45,7 +45,7 @@ export default class Balloon implements BalloonContextInterface{
   }
 
 
-  update(dt:number){
+  update(dt:number):void{
     if(!this.currentBalloonState){
       throw new Error("currentBalloonState is null");
     }

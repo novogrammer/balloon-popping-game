@@ -145,7 +145,7 @@ export default class App implements SceneContextInterface{
     };
 
   }
-  setupFirebase(){
+  setupFirebase():void{
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const firestore = getFirestore(app);
@@ -163,7 +163,7 @@ export default class App implements SceneContextInterface{
       firestore,
     }
   }
-  onKeyDown(event:KeyboardEvent){
+  onKeyDown(event:KeyboardEvent):void{
     if(IS_DEBUG){
       console.log(event);
     }
@@ -185,7 +185,7 @@ export default class App implements SceneContextInterface{
         break;
     }
   }
-  onKeyUp(event:KeyboardEvent){
+  onKeyUp(event:KeyboardEvent):void{
     if(IS_DEBUG){
       console.log(event);
     }
@@ -194,14 +194,14 @@ export default class App implements SceneContextInterface{
     }
     this.currentSceneState.onCodeUp(event.code);
   }
-  setupStats(){
+  setupStats():void{
     this.stats = new Stats();
     this.stats.dom.style.left="auto";
     this.stats.dom.style.right="0px";
     document.body.appendChild(this.stats.dom);
 
   }
-  setupUI(){
+  setupUI():void{
     {
       
       const footButtonListElement=document.createElement("div");
@@ -263,7 +263,7 @@ export default class App implements SceneContextInterface{
     }
 
   }
-  setupThree(){
+  setupThree():void{
 
     const size = this.elementSizeObserver.getSize();
 
@@ -350,7 +350,7 @@ export default class App implements SceneContextInterface{
     }
 
   }
-  setupEvents(){
+  setupEvents():void{
     document.addEventListener("keydown",this.onKeyDown.bind(this));
     document.addEventListener("keyup",this.onKeyUp.bind(this));
     {
@@ -437,7 +437,7 @@ export default class App implements SceneContextInterface{
 
   }
 
-  onResize(){
+  onResize():void{
     if (!this.threeObjects) {
       throw new Error("this.threeObjects is null");
     }
@@ -451,7 +451,7 @@ export default class App implements SceneContextInterface{
     camera.updateProjectionMatrix();
 
   }
-  toggleDebug(){
+  toggleDebug():void{
     if(!this.stats){
       throw new Error("this.stats is null");
     }
@@ -465,10 +465,10 @@ export default class App implements SceneContextInterface{
     }
     
   }
-  toggleUI(){
+  toggleUI():void{
     this.uiViewElement.classList.toggle("p-ui-view--hidden");
   }
-  toggleFullscreen(){
+  toggleFullscreen():void{
     if (!document.fullscreenElement) {
       this.appElement.requestFullscreen().catch((err) => {
         console.error(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`);

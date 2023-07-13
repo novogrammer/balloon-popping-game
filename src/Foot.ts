@@ -1,6 +1,5 @@
 import {gsap} from "gsap";
 
-import FootMesh from "./FootMesh";
 import KeyEventListenerInterface from "./KeyEventListenerInterface";
 import ObjectLocation from "./ObjectLocation";
 import { FOOT_LIFT_Y, FOOT_MOVE_DOWN_DURATION, FOOT_MOVE_UP_DURATION } from "./constants";
@@ -15,9 +14,9 @@ export default class Foot implements KeyEventListenerInterface{
   targetCode:string;
   footState:FootState;
   debugFoot:HTMLElement;
-  footMesh:FootMesh;
+  footMesh:THREE.Mesh;
   
-  constructor(targetCode:string,originalFootMesh:FootMesh){
+  constructor(targetCode:string,originalFootMesh:THREE.Mesh){
     this.targetCode=targetCode;
     this.footState=FootState.Up;
     this.debugFoot=document.createElement("div");
@@ -40,7 +39,7 @@ export default class Foot implements KeyEventListenerInterface{
     }
     
   }
-  update(_dt:number){
+  update(_dt:number):void{
 
   }  
   //#region KeyEventListenerInterface
