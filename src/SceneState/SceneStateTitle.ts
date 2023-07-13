@@ -40,7 +40,6 @@ export default class SceneStateTitle extends SceneStateBase{
     debugViewElement.appendChild(this.debugTitle);
     const game2DViewElement=this.sceneContext.getGame2DViewElement();
     game2DViewElement.appendChild(this.game2DSceneElement);
-    this.sceneContext.startTitleAnimation();
   }
   onEndSceneState(): void {
     if(IS_DEBUG){
@@ -50,11 +49,13 @@ export default class SceneStateTitle extends SceneStateBase{
     debugViewElement.removeChild(this.debugTitle);
     const game2DViewElement=this.sceneContext.getGame2DViewElement();
     game2DViewElement.removeChild(this.game2DSceneElement);
-    this.sceneContext.stopTitleAnimation();
     
   }
   update(_dt:number):void{
 
+  }
+  isGame(): boolean {
+    return false;
   }
   //#region KeyEventListenerInterface
   onCodeDown(code:string): void {

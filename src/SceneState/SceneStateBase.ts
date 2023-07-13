@@ -13,6 +13,7 @@ export default abstract class SceneStateBase implements KeyEventListenerInterfac
   abstract onBeginSceneState():void;
   abstract onEndSceneState():void;
   abstract update(dt:number):void;
+  abstract isGame():boolean;
   //#region KeyEventListenerInterface
   abstract onCodeDown(code:string):void;
   abstract onCodeUp(code:string):void;

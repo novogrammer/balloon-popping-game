@@ -17,6 +17,4 @@ export default interface SceneContextInterface{
   getOriginalStarMesh():THREE.Mesh;
   getOriginalFootMesh():THREE.Mesh;
   getOriginalBalloonMesh():THREE.Mesh;
-  startTitleAnimation():void;
-  stopTitleAnimation():void;
 }

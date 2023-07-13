@@ -12,7 +12,7 @@ import {Firestore, addDoc, collection, getFirestore, onSnapshot} from "firebase/
 
 
 // import {gsap} from "gsap";
-import { FOVY, IS_DEBUG } from "./constants";
+import { FOVY, IS_DEBUG, MAIN_CAMERA_GAME_LOOKAT, MAIN_CAMERA_GAME_POSITION, MAIN_CAMERA_MOVE_DURATION, MAIN_CAMERA_MOVE_LIST } from "./constants";
 import SceneContextInterface from "./SceneState/SceneContextInterface";
 import SceneStateBase from "./SceneState/SceneStateBase";
 import SceneStateTitle from "./SceneState/SceneStateTitle";
@@ -80,6 +80,7 @@ export default class App implements SceneContextInterface{
   firebaseObjects?:FirebaseObjects;
 
   isDebug:boolean;
+  cameraMoveTime:number;
   constructor(){
     this.appElement=document.querySelector<HTMLDivElement>("#app")!;
     if(!this.appElement){
@@ -106,6 +107,7 @@ export default class App implements SceneContextInterface{
     });
 
     this.isDebug=true;
+    this.cameraMoveTime=0;
     
     this.setupStats();
     if(!IS_DEBUG){
@@ -274,8 +276,8 @@ export default class App implements SceneContextInterface{
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(FOVY, size.width / size.height, 0.1, 1000);
     camera.name="MainCamera";
-    camera.position.y=2;
-    camera.position.z=10;
+    camera.position.copy(MAIN_CAMERA_GAME_POSITION);
+    camera.lookAt(MAIN_CAMERA_GAME_LOOKAT);
     scene.add(camera);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
@@ -283,7 +285,7 @@ export default class App implements SceneContextInterface{
     scene.add(ambientLight);
 
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(-10, 10, 10);
+    directionalLight.position.set(-6, 10, 3);
     directionalLight.castShadow=true;
     directionalLight.shadow.camera.top = 10;
     directionalLight.shadow.camera.bottom = - 10;
@@ -421,6 +423,28 @@ export default class App implements SceneContextInterface{
     }
     const {renderer,scene,camera,titleAnimationGroup}=this.threeObjects;
     titleAnimationGroup.update(dt);
+    if(this.currentSceneState){
+      if(this.currentSceneState.isGame()){
+        camera.position.copy(MAIN_CAMERA_GAME_POSITION);
+        camera.lookAt(MAIN_CAMERA_GAME_LOOKAT);
+        titleAnimationGroup.visible=false;
+      }else{
+        camera.position.copy(MAIN_CAMERA_GAME_POSITION);
+        titleAnimationGroup.visible=true;
+
+        this.cameraMoveTime=(this.cameraMoveTime+dt)%MAIN_CAMERA_MOVE_DURATION;
+        let totalDuration=0;
+        for(let mainCameraMove of MAIN_CAMERA_MOVE_LIST){
+          if(this.cameraMoveTime<totalDuration+mainCameraMove.duration){
+            const r=(this.cameraMoveTime-totalDuration)/mainCameraMove.duration;
+            camera.position.lerpVectors(mainCameraMove.from,mainCameraMove.to,r);
+            break;
+          }
+          totalDuration+=mainCameraMove.duration;
+        }
+        camera.lookAt(MAIN_CAMERA_GAME_LOOKAT);
+      }
+    }
 
     renderer.render(scene, camera);
 
@@ -521,22 +545,6 @@ export default class App implements SceneContextInterface{
       throw new Error("this.originalMeshes is null");
     }
     return this.originalMeshes.balloonMesh;
-  }
-  startTitleAnimation():void{
-    if(!this.threeObjects){
-      throw new Error("this.threeObjects is null");
-    }
-    const {titleAnimationGroup}=this.threeObjects;
-    titleAnimationGroup.visible=true;
-    
-  }
-  stopTitleAnimation():void{
-    if(!this.threeObjects){
-      throw new Error("this.threeObjects is null");
-    }
-    const {titleAnimationGroup}=this.threeObjects;
-    titleAnimationGroup.visible=false;
-    
   }
   //#endregion
 

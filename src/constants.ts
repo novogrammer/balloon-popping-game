@@ -1,3 +1,4 @@
+import * as THREE from "three";
 import InputCharactorInterface from "./InputCharactorInterface";
 
 export const IS_DEBUG=false;
@@ -54,3 +55,26 @@ export const TITLE_ANIMATION_BALLOON_QTY=12;
 export const TITLE_ANIMATION_BALLOON_RADIUS=5;
 export const TITLE_ANIMATION_BALLOON_HEIGHT=5;
 export const TITLE_ANIMATION_DURATION=10;
+
+export const MAIN_CAMERA_GAME_POSITION=new THREE.Vector3(0,2,10);
+export const MAIN_CAMERA_GAME_LOOKAT=new THREE.Vector3(0,2,0);
+
+export const MAIN_CAMERA_MOVE_LIST=[
+  {
+    from:new THREE.Vector3(-10,2,10),
+    to:new THREE.Vector3(10,2,10),
+    duration:10,
+  },
+  {
+    from:new THREE.Vector3(-50,20,-40),
+    to:new THREE.Vector3(50,20,50),
+    duration:10,
+  },
+  {
+    from:new THREE.Vector3(-1,1,1),
+    to:new THREE.Vector3(1,1,1),
+    duration:10,
+  },
+];
+
+export const MAIN_CAMERA_MOVE_DURATION=MAIN_CAMERA_MOVE_LIST.reduce((total,move)=>total+move.duration,0);

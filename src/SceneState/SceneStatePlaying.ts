@@ -197,6 +197,9 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
     }
     
   }
+  isGame(): boolean {
+    return true;
+  }
   //#region KeyEventListenerInterface
   onCodeDown(code:string): void {
     if(IS_DEBUG){

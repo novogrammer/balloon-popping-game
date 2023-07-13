@@ -4,10 +4,10 @@ import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js'
 export default class FloorMesh extends THREE.Mesh{
   constructor(){
 
-    const fromX=-10;
-    const fromZ=-10;
-    const toX=10;
-    const toZ=10;
+    const fromX=-15;
+    const fromZ=-15;
+    const toX=15;
+    const toZ=15;
     const size=2;
     const planeGeometryList=[];
     for(let x=fromX;x<toX;x+=size){
