@@ -4,7 +4,7 @@ import BalloonContextInterface from "./BalloonState/BalloonContextInterface";
 import BalloonStateBase from "./BalloonState/BalloonStateBase";
 import BalloonStatePreparing from "./BalloonState/BalloonStatePreparing";
 import ObjectLocation from "./ObjectLocation";
-import { AWAY_DURATION, POPPING_DURATION, READY_DURATION, STAR_EFFECT_MOVE_LENGTH, STAR_EFFECT_QTY } from "./constants";
+import { AWAY_DURATION, POPPING_DURATION, READY_DURATION, STAR_EFFECT_MOVE_LENGTH, STAR_EFFECT_OFFSET_Y, STAR_EFFECT_QTY } from "./constants";
 
 export default class Balloon implements BalloonContextInterface{
   objectLocation:ObjectLocation|null=null;
@@ -116,10 +116,10 @@ export default class Balloon implements BalloonContextInterface{
       starMesh.visible=true;
       gsap.fromTo(starMesh.position,{
         x:0,
-        y:0.5,
+        y:STAR_EFFECT_OFFSET_Y,
       },{
         x:0+Math.cos(angle)*STAR_EFFECT_MOVE_LENGTH,
-        y:0.5+Math.sin(angle)*STAR_EFFECT_MOVE_LENGTH,
+        y:STAR_EFFECT_OFFSET_Y+Math.sin(angle)*STAR_EFFECT_MOVE_LENGTH,
         duration:POPPING_DURATION*0.75,
         ease:"power3.out",
       });

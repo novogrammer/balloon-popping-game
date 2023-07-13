@@ -40,7 +40,7 @@ export const RANK_TEXT_LIST=[
 
 export const INPUT_BLINK_CYCLE=0.25;
 
-export const FOOT_LIFT_Y=2;
+export const FOOT_LIFT_Y=3;
 export const FOOT_MOVE_UP_DURATION=0.2;
 export const FOOT_MOVE_DOWN_DURATION=0.1;
 
@@ -48,6 +48,7 @@ export const GAME_HEIGHT=7;
 
 export const STAR_EFFECT_QTY=12;
 export const STAR_EFFECT_MOVE_LENGTH=1;
+export const STAR_EFFECT_OFFSET_Y=1;
 
 export const TITLE_ANIMATION_BALLOON_QTY=12;
 export const TITLE_ANIMATION_BALLOON_RADIUS=5;
