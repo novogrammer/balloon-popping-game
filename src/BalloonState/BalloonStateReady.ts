@@ -11,6 +11,7 @@ export default class BalloonStateReady extends BalloonStateBase{
     super(balloonContext);
     this.readyTime=READY_DURATION;
   }
+  //#region BalloonStateBase
   onBeginBalloonState(): void {
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onBeginBalloonState`);
@@ -36,4 +37,5 @@ export default class BalloonStateReady extends BalloonStateBase{
       this.balloonContext.setNextBalloonState(new BalloonStateAway(this.balloonContext));
     }
   }
+  //#endregion
 }

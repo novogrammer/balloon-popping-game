@@ -10,6 +10,7 @@ export default class BalloonStateAway extends BalloonStateBase{
     super(balloonContext);
     this.awayTime=AWAY_DURATION;
   }
+  //#region BalloonStateBase
   onBeginBalloonState(): void {
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onBeginBalloonState`);
@@ -34,4 +35,5 @@ export default class BalloonStateAway extends BalloonStateBase{
       this.balloonContext.setNextBalloonState(new BalloonStatePreparing(this.balloonContext));
     }
   }
+  //#endregion
 }

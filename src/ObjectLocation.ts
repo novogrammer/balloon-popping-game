@@ -32,20 +32,24 @@ export default class ObjectLocation implements AddScoreListenerInterface,KeyEven
     this.foot.destroy();
     this.balloon.destroy();
   }
+  onStamp():void{
+    this.balloon.onStamp();
+  }
+  update(dt:number):void{
+    this.foot.update(dt);
+    this.balloon.update(dt);
+  }
+  //#region AddScoreListenerInterface
+  addScore(score:number):void{
+    this.addScoreListener.addScore(score);
+  }
+  //#endregion
+  //#region KeyEventListenerInterface
   onCodeDown(code:string): void {
     this.foot.onCodeDown(code);
   }
   onCodeUp(code:string): void {
     this.foot.onCodeUp(code);
   }
-  onStamp():void{
-    this.balloon.onStamp();
-  }
-  addScore(score:number):void{
-    this.addScoreListener.addScore(score);
-  }
-  update(dt:number):void{
-    this.foot.update(dt);
-    this.balloon.update(dt);
-  }
+  //#endregion
 }

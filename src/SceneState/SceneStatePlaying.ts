@@ -78,6 +78,7 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
 
 
   }
+  //#region SceneStateBase
   onBeginSceneState(): void {
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onBeginSceneState`);
@@ -161,34 +162,6 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
     game2DViewElement.removeChild(this.game2DSceneElement);
 
   }
-  onCodeDown(code:string): void {
-    if(IS_DEBUG){
-      console.log(`${this.constructor.name}.onCodeDown`,code);
-    }
-    if(this.currentPlayingState){
-      if(this.currentPlayingState.isInAction()){
-        for(let objectLocation of this.objectLocationList){
-          objectLocation.onCodeDown(code);
-        }
-      }
-    }
-  }
-  onCodeUp(code:string): void {
-    if(IS_DEBUG){
-      console.log(`${this.constructor.name}.onCodeUp`,code);
-    }
-    if(this.currentPlayingState){
-      if(this.currentPlayingState.isInAction()){
-        for(let objectLocation of this.objectLocationList){
-          objectLocation.onCodeUp(code);
-        }
-      }
-    }
-  }
-  goNextScene(){
-    const nextSceneState=new SceneStateResult(this.sceneContext,this.score);
-    this.sceneContext.setNextSceneState(nextSceneState);
-  }
   update(dt:number):void{
     if(this.currentPlayingState){
       this.currentPlayingState.update(dt);
@@ -224,6 +197,34 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
     }
     
   }
+  //#region KeyEventListenerInterface
+  onCodeDown(code:string): void {
+    if(IS_DEBUG){
+      console.log(`${this.constructor.name}.onCodeDown`,code);
+    }
+    if(this.currentPlayingState){
+      if(this.currentPlayingState.isInAction()){
+        for(let objectLocation of this.objectLocationList){
+          objectLocation.onCodeDown(code);
+        }
+      }
+    }
+  }
+  onCodeUp(code:string): void {
+    if(IS_DEBUG){
+      console.log(`${this.constructor.name}.onCodeUp`,code);
+    }
+    if(this.currentPlayingState){
+      if(this.currentPlayingState.isInAction()){
+        for(let objectLocation of this.objectLocationList){
+          objectLocation.onCodeUp(code);
+        }
+      }
+    }
+  }
+  //#endregion
+  //#endregion
+  //#region PlayingContextInterface
   updateCountdownTime(dt: number): boolean {
     this.countdownTime-=dt;
     if(this.countdownTime<0){
@@ -258,8 +259,9 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
       this.currentPlayingState.onBeginPlayingState();
     }
   }
-  addScore(score: number): void {
-    this.score+=score;
+  goNextScene(){
+    const nextSceneState=new SceneStateResult(this.sceneContext,this.score);
+    this.sceneContext.setNextSceneState(nextSceneState);
   }
   showGo(): void {
     const goElement=document.createElement("div");
@@ -274,4 +276,10 @@ export default class SceneStatePlaying extends SceneStateBase implements Playing
     this.game2DSceneElement.appendChild(timeoverElement);
 
   }
+  //#endregion
+  //#region AddScoreListenerInterface
+  addScore(score: number): void {
+    this.score+=score;
+  }
+  //#endregion
 }

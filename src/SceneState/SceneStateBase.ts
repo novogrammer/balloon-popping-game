@@ -10,9 +10,11 @@ export default abstract class SceneStateBase implements KeyEventListenerInterfac
     this.game2DSceneElement=document.createElement("div");
     this.game2DSceneElement.classList.add("p-game2d-view__scene");
   }
-  abstract onCodeDown(code:string):void;
-  abstract onCodeUp(code:string):void;
   abstract onBeginSceneState():void;
   abstract onEndSceneState():void;
   abstract update(dt:number):void;
+  //#region KeyEventListenerInterface
+  abstract onCodeDown(code:string):void;
+  abstract onCodeUp(code:string):void;
+  //#endregion
 }

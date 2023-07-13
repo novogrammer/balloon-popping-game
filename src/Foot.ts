@@ -42,7 +42,8 @@ export default class Foot implements KeyEventListenerInterface{
   }
   update(_dt:number){
 
-  }
+  }  
+  //#region KeyEventListenerInterface
   onCodeDown(code:string){
     if(code!==this.targetCode){
       return;
@@ -77,4 +78,6 @@ export default class Foot implements KeyEventListenerInterface{
       ease:"power2.out",
     });
   }
+  //#endregion
+
 }

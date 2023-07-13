@@ -31,6 +31,7 @@ export default class SceneStateTitle extends SceneStateBase{
     orderElement.textContent="PUSH ANY BUTTON";
     this.game2DSceneElement.appendChild(orderElement);
   }
+  //#region SceneStateBase
   onBeginSceneState(): void {
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onBeginSceneState`);
@@ -51,6 +52,10 @@ export default class SceneStateTitle extends SceneStateBase{
     game2DViewElement.removeChild(this.game2DSceneElement);
     
   }
+  update(_dt:number):void{
+
+  }
+  //#region KeyEventListenerInterface
   onCodeDown(code:string): void {
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onCodeDown`,code);
@@ -64,8 +69,8 @@ export default class SceneStateTitle extends SceneStateBase{
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onCodeUp`,code);
     }
-  }
-  update(_dt:number):void{
+  }  
+  //#endregion
+  //#endregion
 
-  }
 }

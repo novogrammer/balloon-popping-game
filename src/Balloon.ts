@@ -44,6 +44,20 @@ export default class Balloon implements BalloonContextInterface{
     }
   }
 
+
+  update(dt:number){
+    if(!this.currentBalloonState){
+      throw new Error("currentBalloonState is null");
+    }
+    this.currentBalloonState.update(dt);
+  }
+  onStamp():void{
+    if(!this.currentBalloonState){
+      throw new Error("currentBalloonState is null");
+    }
+    this.currentBalloonState.onStamp();
+  }
+  //#region BalloonContextInterface
   setNextBalloonState(nextBalloonState: BalloonStateBase|null): void {
     if(this.currentBalloonState){
       this.currentBalloonState.onEndBalloonState();
@@ -58,24 +72,6 @@ export default class Balloon implements BalloonContextInterface{
   }
   removeDebugModifier(modifier:string):void{
     this.debugBalloon.classList.remove("p-debug-view__balloon--"+modifier);
-  }
-
-  update(dt:number){
-    if(!this.currentBalloonState){
-      throw new Error("currentBalloonState is null");
-    }
-    this.currentBalloonState.update(dt);
-  }
-  onStamp():void{
-    if(!this.currentBalloonState){
-      throw new Error("currentBalloonState is null");
-    }
-    this.currentBalloonState.onStamp();
-  }
-  addScore(score: number): void {
-    if(this.objectLocation){
-      this.objectLocation.addScore(score);
-    }
   }
   startPreparingAnimation():void{
     this.balloonMesh.visible=false;
@@ -128,7 +124,13 @@ export default class Balloon implements BalloonContextInterface{
         ease:"power3.out",
       });
     }
-
   }
-
+  //#region AddScoreListenerInterface
+  addScore(score: number): void {
+    if(this.objectLocation){
+      this.objectLocation.addScore(score);
+    }
+  }
+  //#endregion
+  //#endregion
 }

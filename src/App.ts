@@ -437,6 +437,48 @@ export default class App implements SceneContextInterface{
 
   }
 
+  onResize(){
+    if (!this.threeObjects) {
+      throw new Error("this.threeObjects is null");
+    }
+    const { renderer, camera } = this.threeObjects;
+    const size = this.elementSizeObserver.getSize();
+    if (IS_DEBUG) {
+      console.log("onResize", size.width, size.height);
+    }
+    renderer.setSize(size.width, size.height);
+    camera.aspect = size.width / size.height;
+    camera.updateProjectionMatrix();
+
+  }
+  toggleDebug(){
+    if(!this.stats){
+      throw new Error("this.stats is null");
+    }
+    this.isDebug=!this.isDebug;
+    if(this.isDebug){
+      this.debugViewElement.classList.remove("p-debug-view--hidden");
+      this.stats.dom.style.display = "block";
+    }else{
+      this.debugViewElement.classList.add("p-debug-view--hidden");
+      this.stats.dom.style.display = "none";
+    }
+    
+  }
+  toggleUI(){
+    this.uiViewElement.classList.toggle("p-ui-view--hidden");
+  }
+  toggleFullscreen(){
+    if (!document.fullscreenElement) {
+      this.appElement.requestFullscreen().catch((err) => {
+        console.error(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+
+  }
+  //#region SceneContextInterface
   setNextSceneState(nextSceneState:SceneStateBase|null):void {
     if(this.currentSceneState){
       this.currentSceneState.onEndSceneState();
@@ -491,46 +533,6 @@ export default class App implements SceneContextInterface{
     }
     return this.originalMeshes.balloonMesh;
   }
-  onResize(){
-    if (!this.threeObjects) {
-      throw new Error("this.threeObjects is null");
-    }
-    const { renderer, camera } = this.threeObjects;
-    const size = this.elementSizeObserver.getSize();
-    if (IS_DEBUG) {
-      console.log("onResize", size.width, size.height);
-    }
-    renderer.setSize(size.width, size.height);
-    camera.aspect = size.width / size.height;
-    camera.updateProjectionMatrix();
-
-  }
-  toggleDebug(){
-    if(!this.stats){
-      throw new Error("this.stats is null");
-    }
-    this.isDebug=!this.isDebug;
-    if(this.isDebug){
-      this.debugViewElement.classList.remove("p-debug-view--hidden");
-      this.stats.dom.style.display = "block";
-    }else{
-      this.debugViewElement.classList.add("p-debug-view--hidden");
-      this.stats.dom.style.display = "none";
-    }
-    
-  }
-  toggleUI(){
-    this.uiViewElement.classList.toggle("p-ui-view--hidden");
-  }
-  toggleFullscreen(){
-    if (!document.fullscreenElement) {
-      this.appElement.requestFullscreen().catch((err) => {
-        console.error(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`);
-      });
-    } else {
-      document.exitFullscreen();
-    }
-
-  }
+  //#endregion
 
 }

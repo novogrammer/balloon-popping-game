@@ -52,6 +52,7 @@ export default class SceneStateResult extends SceneStateBase{
     this.game2DSceneElement.appendChild(playerScoreListElement);
 
   }
+  //#region SceneStateBase
   onBeginSceneState(): void {
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onBeginSceneState`);
@@ -117,6 +118,25 @@ export default class SceneStateResult extends SceneStateBase{
     });
     
   }
+  update(dt:number):void{
+    const nameInputCharactor=this.getCurrentInputCharactor();
+    const r=(this.timeForAnimation)/INPUT_BLINK_CYCLE%1;
+    const inputCharactor=r<0.5?nameInputCharactor.label:" ";
+    this.debugName.textContent=`name: ${this.name}${inputCharactor}`;
+    this.debugScore.textContent=`score: ${this.score}`;
+    this.debugPlayerScoreList.innerHTML=`playerScoreList:<br>`+this.playerScoreList.map((playerScore)=>`${playerScore.name}:${playerScore.score}`).join("<br>");
+
+    {
+      const nameElement=document.querySelector(".p-game2d-scene-result__name");
+      if(!nameElement){
+        throw new Error("nameElement is null");
+      }
+      nameElement.textContent=`NAME: ${this.name}${inputCharactor}`;
+    }
+
+    this.timeForAnimation+=dt;
+  }
+  //#region KeyEventListenerInterface
   onCodeDown(code:string): void {
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onCodeDown`,code);
@@ -146,6 +166,8 @@ export default class SceneStateResult extends SceneStateBase{
       console.log(`${this.constructor.name}.onCodeUp`,code);
     }
   }
+  //#endregion
+  //#endregion
   getCurrentInputCharactor():InputCharactorInterface{
     return NAME_INPUT_CHARACTOR_LIST[this.charactorInputIndex];
   }
@@ -154,23 +176,5 @@ export default class SceneStateResult extends SceneStateBase{
       this.charactorInputIndex + NAME_INPUT_CHARACTOR_LIST.length + diff
     )%NAME_INPUT_CHARACTOR_LIST.length;
 
-  }
-  update(dt:number):void{
-    const nameInputCharactor=this.getCurrentInputCharactor();
-    const r=(this.timeForAnimation)/INPUT_BLINK_CYCLE%1;
-    const inputCharactor=r<0.5?nameInputCharactor.label:" ";
-    this.debugName.textContent=`name: ${this.name}${inputCharactor}`;
-    this.debugScore.textContent=`score: ${this.score}`;
-    this.debugPlayerScoreList.innerHTML=`playerScoreList:<br>`+this.playerScoreList.map((playerScore)=>`${playerScore.name}:${playerScore.score}`).join("<br>");
-
-    {
-      const nameElement=document.querySelector(".p-game2d-scene-result__name");
-      if(!nameElement){
-        throw new Error("nameElement is null");
-      }
-      nameElement.textContent=`NAME: ${this.name}${inputCharactor}`;
-    }
-
-    this.timeForAnimation+=dt;
   }
 }

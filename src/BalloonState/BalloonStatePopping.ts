@@ -10,6 +10,7 @@ export default class BalloonStatePopping extends BalloonStateBase{
     super(balloonContext);
     this.poppingTime=POPPING_DURATION;
   }
+  //#region BalloonStateBase
   onBeginBalloonState(): void {
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onBeginBalloonState`);
@@ -35,4 +36,5 @@ export default class BalloonStatePopping extends BalloonStateBase{
       this.balloonContext.setNextBalloonState(new BalloonStatePreparing(this.balloonContext));
     }
   }
+  //#endregion
 }

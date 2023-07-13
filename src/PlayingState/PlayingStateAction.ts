@@ -7,6 +7,7 @@ export default class PlayingStateAction extends PlayingStateBase{
   constructor(playingContext:PlayingContextInterface){
     super(playingContext);
   }
+  //#region PlayingStateBase
   onBeginPlayingState():void{
     if(IS_DEBUG){
       console.log(`${this.constructor.name}.onBeginPlayingState`);
@@ -28,4 +29,5 @@ export default class PlayingStateAction extends PlayingStateBase{
   isInAction():boolean{
     return true;
   }
+  //#endregion
 }
