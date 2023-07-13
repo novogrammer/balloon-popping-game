@@ -23,3 +23,21 @@ npm run dev
 npm run build
 npm run preview
 ```
+
+## Firestoreのrules
+
+```
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    match /playerScores/{playerScoreId}{
+      allow read: if true;
+    	allow create: if request.resource.data.name.size()==3 && 0 <= request.resource.data.score;
+    }
+  }
+}
+```
