@@ -41,3 +41,13 @@ service cloud.firestore {
   }
 }
 ```
+
+
+## UML
+Plant UMLでつくりました。
+
+![クラス図](./uml/クラス図.png)
+![SceneStateの状態遷移図](./uml/SceneStateの状態遷移図.png)
+![PlayingStateの状態遷移図](./uml/PlayingStateの状態遷移図.png)
+![FootStateの状態遷移図](./uml/FootStateの状態遷移図.png)
+![BalloonStateの状態遷移図](./uml/BalloonStateの状態遷移図.png)

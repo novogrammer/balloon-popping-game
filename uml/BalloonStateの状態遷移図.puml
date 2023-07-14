@@ -3,11 +3,11 @@ title BalloonStateの状態遷移図
 
 
 [*] --> BalloonStatePreparing
-BalloonStatePreparing --> BalloonStateReady : Timeout random
+BalloonStatePreparing --> BalloonStateReady : Timeout in 0.5~1.5[s]
 BalloonStateReady --> BalloonStatePopping : onStamp
-BalloonStatePopping --> BalloonStatePreparing : Timeout constant
-BalloonStateReady --> BalloonStateAway : Timeout constant
-BalloonStateAway --> BalloonStatePreparing : Timeout constant
+BalloonStatePopping --> BalloonStatePreparing : Timeout in 0.5[s]
+BalloonStateReady --> BalloonStateAway : Timeout in 1[s]
+BalloonStateAway --> BalloonStatePreparing : Timeout in 1[s]
 
 
 @enduml
