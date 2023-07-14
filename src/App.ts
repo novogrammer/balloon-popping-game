@@ -348,9 +348,9 @@ export default class App implements SceneContextInterface{
 
     const renderer = new THREE.WebGLRenderer({
       alpha: false,
-      // antialias:true,
+      antialias:true,
     });
-    renderer.setPixelRatio(window.devicePixelRatio);
+    // renderer.setPixelRatio(window.devicePixelRatio);
     renderer.shadowMap.enabled=true;
     renderer.domElement.classList.add("p-game3d-view__canvas");
     this.game3DViewElement.appendChild(renderer.domElement);
