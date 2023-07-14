@@ -505,7 +505,7 @@ export default class App implements SceneContextInterface{
   }
   toggleFullscreen():void{
     if (!document.fullscreenElement) {
-      this.appElement.requestFullscreen().catch((err) => {
+      document.body.requestFullscreen().catch((err) => {
         console.error(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`);
       });
     } else {
