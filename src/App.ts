@@ -272,6 +272,21 @@ export default class App implements SceneContextInterface{
         buttonToggleUIElement,
         buttonToggleFullscreenElement,
       };
+      const goListElement=document.createElement("div");
+      goListElement.classList.add("p-ui-view__go-list");
+      this.uiViewElement.appendChild(goListElement);
+
+      const goGithubElement=document.createElement("a");
+      goGithubElement.classList.add("p-ui-view__go-github");
+      goGithubElement.href="https://github.com/novogrammer/balloon-popping-game";
+      goListElement.appendChild(goGithubElement);
+
+      const githubImageElement=document.createElement("img");
+      githubImageElement.classList.add("p-ui-view__go-image");
+      githubImageElement.src="./img/GitHub-Mark-64px.png";
+      githubImageElement.alt="GitHub";
+      goGithubElement.appendChild(githubImageElement);
+
     }
 
   }

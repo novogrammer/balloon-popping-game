@@ -16,7 +16,7 @@
   &__foot-button-list{
     display:flex;
     justify-content: space-between;
-    margin-bottom:2vw;
+    margin-bottom:1vw;
   }
   &__foot-button{
     font-size:10vw;
@@ -34,6 +34,7 @@
   &__system-button-list{
     display:flex;
     justify-content: space-between;
+    margin-bottom:1vw;
   }
 
   &__system-button{
@@ -48,5 +49,15 @@
     &--toggle-fullscreen{
 
     }
+  }
+  &__go-list{
+    text-align: right;
+  }
+  &__go-github{
+
+  }
+  &__go-image{
+    width:5vw;
+    height:auto;
   }
 }
