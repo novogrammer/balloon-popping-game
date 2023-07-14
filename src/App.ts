@@ -348,7 +348,7 @@ export default class App implements SceneContextInterface{
 
     const renderer = new THREE.WebGLRenderer({
       alpha: false,
-      antialias:true,
+      // antialias:true,
     });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.shadowMap.enabled=true;
