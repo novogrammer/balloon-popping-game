@@ -9,7 +9,8 @@ export const COUNTDOWN_DURATION=3;
 export const GAME_DURATION=30;
 export const TIMEOUT_DURATION=3;
 
-export const PREPARING_DURATION=1;
+export const PREPARING_DURATION_MIN=0.5;
+export const PREPARING_DURATION_MAX=1.5;
 export const READY_DURATION=1;
 export const POPPING_DURATION=0.5;
 export const AWAY_DURATION=1;
